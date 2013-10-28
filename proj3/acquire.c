@@ -1,9 +1,12 @@
-/*********************************************************************/
-/* Cody Gildea 008933663 CECS 326                                    */
-/* PROGRAM: acquire.c                                                */
-/* DESCRIPTION: This program demonstrates the use of locks when	     */ 
-/* running multiple processes. 			                     */
-/*********************************************************************/
+/**************************************************************************/ 
+/* PROGRAM NAME: acquire.c                                                */
+/* CLASS:        CECS-326                                                 */
+/* INSTRUCTOR:   Mr. Haney Williams                                       */
+/* STUDENTS:     Cody Gildea                                              */
+/*               Steven Le                                                */
+/* DESCRIPTION: This program utilizes a parent program and child program  */
+/* to demonstrate using 'locks'  and 'wait' with processes.				  */
+/**************************************************************************/ 
 # include<sys/types.h>
 # include<sys/stat.h>
 # include<fcntl.h>

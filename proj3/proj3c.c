@@ -17,7 +17,7 @@
 # include<fcntl.h>
 main(int argc, char *argv[])
 {
-        pid_t pid, w;                						// For child process
+        pid_t pid, pid_c w;                						// For child process
         int ret_value, num_tries, sleeptime, i, value, status;        // Ret_value and sleeptime
 	char *fname;						  			// File name
 	char *lockfname = "lock1";								// Lock file name
@@ -33,7 +33,7 @@ main(int argc, char *argv[])
 		
 		for (i = 0; i<num_tries;++i)
 		{
-			if((pid = fork()) == 0)
+			if((pid_c = fork()) == 0)
 			{
 				sprintf(sleepChar, "%d", sleeptime);
 				execlp("acquire", "acquire", lockfname, sleepChar, "1", (char*)0);
@@ -53,7 +53,7 @@ main(int argc, char *argv[])
 			printf("\nUnable to obtain lockfile\n");
 			exit(value);
          }
-		 if ((pid = fork()) == 0)
+		 if ((pid_c = fork()) == 0)
 		 {
 			execlp("/bin/cat", "/bin/cat", fname, (char*)0);
 		 }
@@ -62,7 +62,7 @@ main(int argc, char *argv[])
             		if(w != -1) {
 			} 
 		}
-		 if ((pid = fork()) == 0)
+		 if ((pid_c = fork()) == 0)
 		 {
 			sprintf(sleepChar, "%d", sleeptime);
 			execlp("release", "release", lockfname, sleepChar, "1", (char*)0);
