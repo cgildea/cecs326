@@ -17,30 +17,31 @@
 # include<fcntl.h>
 main(int argc, char *argv[])
 {
-        pid_t pid;                						// For child process
-        int ret_value, num_tries, sleeptime, i, value;         // Ret_value and sleeptime
-		char *fname;						  			// File name
-		char *lockfname = "lock1";								// Lock file name
-		char sleepChar[3];
+        pid_t pid, w;                						// For child process
+        int ret_value, num_tries, sleeptime, i, value, status;        // Ret_value and sleeptime
+	char *fname;						  			// File name
+	char *lockfname = "lock1";								// Lock file name
+	char sleepChar[3];
 		
-		value = atoi(argv[0]);
-        fname = argv[1];
-        num_tries = atoi(argv[2]);        // Number of tries, argument 2
-        sleeptime = atoi(argv[3]);        // Max sleeptime, argument 3
+	value = atoi(argv[1]);
+        fname = argv[2];
+        num_tries = atoi(argv[3]);        // Number of tries, argument 3
+        sleeptime = atoi(argv[4]);        // Max sleeptime, argument 4
 
         pid = getpid();                // Get the process ID
         srand((unsigned) pid); 
 		
 		for (i = 0; i<num_tries;++i)
 		{
-			if((pid = fork() == 0)
+			if((pid = fork()) == 0)
 			{
 				sprintf(sleepChar, "%d", sleeptime);
 				execlp("acquire", "acquire", lockfname, sleepChar, "1", (char*)0);
 			}
 			while ((w=wait(&status)) && w != - 1)
 			{
-                if(w != -1) 
+                		if(w != -1) {
+				} 
 			}
 			if (status == 0)
 				break;
@@ -52,22 +53,24 @@ main(int argc, char *argv[])
 			printf("\nUnable to obtain lockfile\n");
 			exit(value);
          }
-		 if ((pid = fork() == 0)
+		 if ((pid = fork()) == 0)
 		 {
 			execlp("/bin/cat", "/bin/cat", fname, (char*)0);
 		 }
 		 while ((w=wait(&status)) && w != - 1)
 		{
-            if(w != -1) 
+            		if(w != -1) {
+			} 
 		}
-		 if ((pid = fork() == 0)
+		 if ((pid = fork()) == 0)
 		 {
 			sprintf(sleepChar, "%d", sleeptime);
 			execlp("release", "release", lockfname, sleepChar, "1", (char*)0);
 		 }
 		 while ((w=wait(&status)) && w != - 1)
 		{
-            if(w != -1) 
+            		if(w != -1) {
+			} 
 		}
 		 if(status == 0)
 			exit(getpid()&255);

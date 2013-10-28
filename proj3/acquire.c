@@ -16,11 +16,12 @@ void main(int argc, char *argv[])
 	char *fname;
 	int fd, sleeptime, n_try, count = 0;
 	pid_t pid;
+/*
 	if (argc != 4) // If arguments are not 4 inputs
         {
                 printf("Invalid inputs, requires 4 arguments.\n", argv[0]);
                 exit(1);
-        }
+        }*/
 	pid = getpid();
 	srand((unsigned)pid);
 	fname = argv[1];

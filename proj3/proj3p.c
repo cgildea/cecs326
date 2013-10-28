@@ -23,12 +23,12 @@ main(int argc, char *argv[])
         char *fname;						  // File name
 		char *lockfname = "lock1";			  // Lock file name
 		char value[3];                		  // Char string for exec call
-
+	/* 
         if (argc !=3) // If arguments are not 4 inputs
            { 
                      printf("Invalid inputs, requires 4 arguments.\n", argv[0]); 
                      exit(1); 
-           } 
+           } */
 		fname = argv[1];
         num_tries = atoi(argv[2]);        // Number of tries, argument 2
         sleeptime = atoi(argv[3]);        // Max sleeptime, argument 3
