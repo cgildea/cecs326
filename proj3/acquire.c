@@ -17,7 +17,7 @@
 void main(int argc, char *argv[])
 {
 	char *fname;
-	int fd, sleeptime, n_try, count = 0;
+	int fd, sleeptime, n_try, value, count = 0;
 	pid_t pid;
 /*
 	if (argc != 4) // If arguments are not 4 inputs
@@ -27,9 +27,10 @@ void main(int argc, char *argv[])
         }*/
 	pid = getpid();
 	srand((unsigned)pid);
-	fname = argv[1];
-	sleeptime = atoi(argv[2]);
-	n_try = atoi(argv[3]);
+	value = atoi(argv[1]);
+	fname = argv[2];
+	sleeptime = atoi(argv[3]);
+	n_try = atoi(argv[4]);
 
 	if (sleeptime <= 0)   // If argument sleeptime is less than or equal to 0, throw exception
         {
@@ -50,8 +51,8 @@ void main(int argc, char *argv[])
 		else
 		{
 			printf("\nUnable to generate.\n");
-			exit(-1);
+			kill(pid, value);
 		}
 		close (fd);
-		printf("\nFile %s has been created\n", fname);
+		//printf("\nFile %s has been created\n", fname);
 }

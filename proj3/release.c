@@ -48,8 +48,8 @@ void main(int argc, char *argv[])
 			sleep(sleeptime);
 		else 
 		{
-			printf("\nCannot release file\n");
+			//printf("\nCannot release file\n");
 			exit(-1);
 		}
-		printf("\nFile is released\n");
+		//printf("\nFile is released\n");
 }

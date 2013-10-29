@@ -5,7 +5,7 @@
 /* STUDENTS:     Cody Gildea                                              */
 /*               Steven Le                                                */
 /* DESCRIPTION: This program utilizes a parent program and child program  */
-/* to demonstrate using 'locks'  and 'wait' with processes.				  */
+/* to demonstrate using 'locks' and 'wait' with processes.		  */
 /**************************************************************************/ 
 # include <stdio.h> 
 # include <stdlib.h> 
@@ -17,13 +17,14 @@
 # include<fcntl.h>
 main(int argc, char *argv[])
 {
-        pid_t pid, pid_c w;                						// For child process
-        int ret_value, num_tries, sleeptime, i, value, status;        // Ret_value and sleeptime
+        pid_t pid, pid_c, w;                						// For child process
+        int ret_value, num_tries, sleeptime, i, status, childNum;        // Ret_value and sleeptime
 	char *fname;						  			// File name
 	char *lockfname = "lock1";								// Lock file name
 	char sleepChar[3];
+	char value[3];
 		
-	value = atoi(argv[1]);
+	childNum = atoi(argv[1]);
         fname = argv[2];
         num_tries = atoi(argv[3]);        // Number of tries, argument 3
         sleeptime = atoi(argv[4]);        // Max sleeptime, argument 4
@@ -36,7 +37,8 @@ main(int argc, char *argv[])
 			if((pid_c = fork()) == 0)
 			{
 				sprintf(sleepChar, "%d", sleeptime);
-				execlp("acquire", "acquire", lockfname, sleepChar, "1", (char*)0);
+				sprintf(value, "%d", childNum);
+				execlp("acquire", "acquire", value, lockfname, sleepChar, "1", (char*)0);
 			}
 			while ((w=wait(&status)) && w != - 1)
 			{
@@ -48,11 +50,14 @@ main(int argc, char *argv[])
 			else
 				sleep(rand()%sleeptime);
 		}
+		/*
 		 if(i == num_tries)
 		 {
 			printf("\nUnable to obtain lockfile\n");
-			exit(value);
-         }
+			kill(pid_c, value);
+         	 }
+		*/
+
 		 if ((pid_c = fork()) == 0)
 		 {
 			execlp("/bin/cat", "/bin/cat", fname, (char*)0);
@@ -73,5 +78,7 @@ main(int argc, char *argv[])
 			} 
 		}
 		 if(status == 0)
+		{
 			exit(getpid()&255);
+		}
 }

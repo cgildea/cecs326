@@ -13,19 +13,21 @@
 
 void main(int argc, char *argv[])
 {
-	char *fname;
-	int fd, sleeptime, n_try, count = 0;
-	pid_t pid;
+	char *fname;					// File name
+	int fd, sleeptime, n_try, count = 0;		// File, sleeptime, number of tries, temp count for number of tries
+	pid_t pid;					// Process ID
+	
 	if (argc != 4) // If arguments are not 4 inputs
         {
                 printf("Invalid inputs, requires 4 arguments.\n", argv[0]);
                 exit(1);
         }
-	pid = getpid();
-	srand((unsigned)pid);
-	fname = argv[1];
-	sleeptime = atoi(argv[2]);
-	n_try = atoi(argv[3]);
+
+	pid = getpid(); 		// Get process 	ID
+	srand((unsigned)pid);		// Seed for PID
+	fname = argv[1];		// File name, argument 2
+	sleeptime = atoi(argv[2]);	// Sleeptime, argument 3
+	n_try = atoi(argv[3]);		// Number of tires, argument 4
 
 	if (sleeptime <= 0)   // If argument sleeptime is less than or equal to 0, throw exception
         {
@@ -41,13 +43,14 @@ void main(int argc, char *argv[])
                 exit(1);
         }
 	while ((fd = creat(fname, 0)) == -1 && errno == EACCES)
-		if(++count < n_try)
-			sleep(rand()%sleeptime);
-		else
+		if(++count < n_try)			// If tries < number of tries
+			sleep(rand()%sleeptime);	// Sleep for max 'sleeptime'
+		else /* Unable to create lock*/
 		{
 			printf("\nUnable to generate.\n");
 			exit(-1);
 		}
+		/* Close File */
 		close (fd);
 		printf("\nFile %s has been created\n", fname);
 }
