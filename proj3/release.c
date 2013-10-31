@@ -16,20 +16,20 @@
 
 void main(int argc, char *argv[])
 {
-	char *fname;
-	int fd, sleeptime, n_try, count = 0;
-	pid_t pid;
+	char *fname;					// File name 
+	int fd, sleeptime, n_try, count = 0;		// File, sleeptime, number tries, count
+	pid_t pid;					// Process ID
 	/*
 	if (argc != 4) // If arguments are not 4 inputs
         {
                 printf("Invalid inputs, requires 4 arguments.\n", argv[0]);
                 exit(1);
         }*/
-	pid = getpid();
+	pid = getpid();					// Get PID
 	srand((unsigned)pid);
-	fname = argv[1];
-	sleeptime = atoi(argv[2]);
-	n_try = atoi(argv[3]);
+	fname = argv[1];				// File name, argument 2
+	sleeptime = atoi(argv[2]);			// Sleeptime, argument 3
+	n_try = atoi(argv[3]);				// Number of tires, argument 4
 
 	if (sleeptime <= 0)   // If argument sleeptime is less than or equal to 0, throw exception
         {
@@ -43,9 +43,10 @@ void main(int argc, char *argv[])
                 printf("Number of tries must be > 0\n");
                 exit(1);
         }
+	/* Release the file*/
 	while (unlink(fname) != 0)
 		if(++count < n_try) 
-			sleep(sleeptime);
+			sleep(sleeptime); /* Sleep*/
 		else 
 		{
 			//printf("\nCannot release file\n");

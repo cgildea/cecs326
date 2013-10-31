@@ -23,16 +23,21 @@ main(int argc, char *argv[])
         char *fname;						  // File name
 		char *lockfname = "lock1";			  // Lock file name
 		char value[3];                		  // Char string for exec call
-	/* 
-        if (argc !=3) // If arguments are not 4 inputs
+	 
+        if (argc !=4) // If arguments are not 4 inputs
            { 
                      printf("Invalid inputs, requires 4 arguments.\n", argv[0]); 
                      exit(1); 
-           } */
-		fname = argv[1];
-        num_tries = atoi(argv[2]);        // Number of tries, argument 2
-        sleeptime = atoi(argv[3]);        // Max sleeptime, argument 3
-        
+           } 
+	fname = argv[1];		  // File name, argument 2
+        num_tries = atoi(argv[2]);        // Number of tries, argument 3
+        sleeptime = atoi(argv[3]);        // Max sleeptime, argument 4
+        if (strcmp("text.dat", fname))
+	{
+                printf("Input error.\n");
+		printf("Argument 2 must be text.dat\n");
+		exit(1);
+	}
         if (num_tries <= 0)   // If argument n_try is less than or equal to 0, throw exception
         {
                 printf("Input error.\n");
@@ -46,6 +51,7 @@ main(int argc, char *argv[])
                 printf("Sleeptime must be > 0\n");
                 exit(1);
         }
+		/* Unlock lock*/
 		unlink(lockfname);
         for (k=0;k<3;++k)
         {
@@ -56,6 +62,7 @@ main(int argc, char *argv[])
                 }
 				
                 else
+			/* Display forked child*/
                         printf("Forked child %d\n",pid);
 				
         }
