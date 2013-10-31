@@ -13,19 +13,19 @@
 
 void main(int argc, char *argv[])
 {
-	char *fname;					// File name
+	char *fname;								// File name
 	int fd, sleeptime, n_try, count = 0;		// File, sleeptime, number of tries, temp count for number of tries
-	pid_t pid;					// Process ID
+	pid_t pid;									// Process ID
 	
-	if (argc != 4) // If arguments are not 4 inputs
+	if (argc != 4) 								// If arguments are not 4 inputs
         {
                 printf("Invalid inputs, requires 4 arguments.\n", argv[0]);
                 exit(1);
         }
 
-	pid = getpid(); 		// Get process 	ID
+	pid = getpid(); 			// Get process 	ID
 	srand((unsigned)pid);		// Seed for PID
-	fname = argv[1];		// File name, argument 2
+	fname = argv[1];			// File name, argument 2
 	sleeptime = atoi(argv[2]);	// Sleeptime, argument 3
 	n_try = atoi(argv[3]);		// Number of tires, argument 4
 
@@ -43,7 +43,7 @@ void main(int argc, char *argv[])
                 exit(1);
         }
 	while ((fd = creat(fname, 0)) == -1 && errno == EACCES)
-		if(++count < n_try)			// If tries < number of tries
+		if(++count < n_try)				// If tries < number of tries
 			sleep(rand()%sleeptime);	// Sleep for max 'sleeptime'
 		else /* Unable to create lock*/
 		{
