@@ -5,7 +5,7 @@
 /* STUDENTS:     Cody Gildea                                              */
 /*               Steven Le                                                */
 /* DESCRIPTION: This program utilizes a parent program and child program  */
-/* to demonstrate using 'locks'  and 'wait' with processes.				  */
+/* to demonstrate using 'locks' and 'critical state'  with processes.	  */
 /**************************************************************************/ 
 # include<sys/types.h>
 # include<sys/stat.h>
@@ -50,7 +50,7 @@ void main(int argc, char *argv[])
 			sleep(rand()%sleeptime);
 		else
 		{
-			printf("\nUnable to generate.\n");
+		//	printf("\nUnable to generate.\n");
 			kill(pid, value);
 		}
 		close (fd);

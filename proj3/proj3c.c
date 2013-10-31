@@ -5,7 +5,7 @@
 /* STUDENTS:     Cody Gildea                                              */
 /*               Steven Le                                                */
 /* DESCRIPTION: This program utilizes a parent program and child program  */
-/* to demonstrate using 'locks' and 'wait' with processes.		  */
+/* to demonstrate using 'locks' and 'critical states' with processes.     */
 /**************************************************************************/ 
 # include <stdio.h> 
 # include <stdlib.h> 
@@ -50,13 +50,14 @@ main(int argc, char *argv[])
 			else
 				sleep(rand()%sleeptime);
 		}
-		/*
+		
 		 if(i == num_tries)
 		 {
 			printf("\nUnable to obtain lockfile\n");
-			kill(pid_c, value);
+			//kill(pid_c, value);
+			exit(childNum);
          	 }
-		*/
+		
 
 		 if ((pid_c = fork()) == 0)
 		 {

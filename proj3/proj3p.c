@@ -1,11 +1,11 @@
 /**************************************************************************/ 
-/* PROGRAM NAME: proj3p.c                                                  */
+/* PROGRAM NAME: proj3p.c                                                 */
 /* CLASS:        CECS-326                                                 */
 /* INSTRUCTOR:   Mr. Haney Williams                                       */
 /* STUDENTS:     Cody Gildea                                              */
 /*               Steven Le                                                */
 /* DESCRIPTION: This program utilizes a parent program and child program  */
-/* to demonstrate using locks  and wait with processes.					  */
+/* to demonstrate using 'locks and 'critical states' with processes.	  */
 /**************************************************************************/ 
 # include <stdio.h> 
 # include <stdlib.h> 
@@ -54,10 +54,10 @@ main(int argc, char *argv[])
                         sprintf(value, "%d",k);
                         execl("proj3c","proj3c", value, argv[1], argv[2], argv[3], (char *)0);        // Call child program
                 }
-				/*
+				
                 else
                         printf("Forked child %d\n",pid);
-				*/
+				
         }
         /* Wait for children */
         while ((w=wait(&status)) && w != - 1)

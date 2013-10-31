@@ -5,7 +5,7 @@
 /* STUDENTS:     Cody Gildea                                              */
 /*               Steven Le                                                */
 /* DESCRIPTION: This program utilizes a parent program and child program  */
-/* to demonstrate using 'locks'  and 'wait' with processes.				  */
+/* to demonstrate using 'locks' and 'critical states  with processes.	  */
 /**************************************************************************/ 
 # include<sys/types.h>
 # include<sys/stat.h>
