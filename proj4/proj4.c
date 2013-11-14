@@ -46,11 +46,6 @@ int main(int argc, char *argv[])
 		exit(1);
 	}
 
-	for (j=0;j<NS;j++)
-	{
-		sem_array[j] = (unsigned short) strtoul(argv[j+3], NULL, 0);
-	}
-
 	/* Create semaphore */ 
 	if (strcmp(argv[1], "n") == 0)
 	{
@@ -73,6 +68,12 @@ int main(int argc, char *argv[])
 		printf("Invalid input for the second argument. %s should be 'n' or 'r'.\n", argv[1]);
 		exit(1);
 	}
+
+	for (j=0;j<NS;j++)
+	{
+		sem_array[j] = (unsigned short) strtoul(argv[j+3], NULL, 0);
+	}
+
  	printf ("Semaphore identifier %d\n", sem_id); 
 	/* Set arg (the union) to the address of the storage location for */ 
 	/* returned semid_ds value */ 
