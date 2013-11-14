@@ -18,7 +18,7 @@ int main(int argc, char *argv[])
 { 
 	int sem_id, sem_value, i, j, NS, count; 
 	key_t ipc_key; 
-	char ropt;
+	char *ropt;
 
 	struct semid_ds sem_buf; 
 	ushort sem_array[NS]; 
