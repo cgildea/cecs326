@@ -34,6 +34,12 @@ int main(int argc, char *argv[])
 
 	ushort sem_array[NS]; 
 
+	if (argc < 4)
+	{
+		printf("Invalid input.  The number of arguments must be at least 4.\n");
+		exit(1);
+	}
+
 	if (argc != (NS + 3))
 	{
 		printf("Invalid input.  The number of semaphores, %d must equal the number of values.\n", NS);
@@ -48,7 +54,7 @@ int main(int argc, char *argv[])
 	/* Create semaphore */ 
 	if (strcmp(argv[1], "n") == 0)
 	{
-		if ((sem_id = semget(ipc_key, NS, IPC_CREAT | IPC_EXCL | 0666)) == -1) 
+		if ((sem_id = semget(ipc_key, NS, IPC_CREAT | 0666 | IPC_EXCL)) == -1) 
 		{ 
 			perror ("semget: IPC | 0666"); 
 	 		exit(1); 
