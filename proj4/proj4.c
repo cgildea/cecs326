@@ -25,7 +25,6 @@ int main(int argc, char *argv[])
 { 
 	int sem_id, sem_value, i, j, NS, count; 
 	key_t ipc_key; 
-	char *ropt;
 
 	struct semid_ds sem_buf; 
 	ushort sem_array[NS]; 
@@ -36,7 +35,7 @@ int main(int argc, char *argv[])
 
 	for (j=0;j<NS;++j)
 	{
-		sem_array[j] = atoi(argv[j+3]);
+		sem_array[j] = (unsigned short) strtoul(argv[j+3], NULL, 0);
 		count++;
 	}
 	if (NS != count)
@@ -46,7 +45,7 @@ int main(int argc, char *argv[])
 	}
 
 	/* Create semaphore */ 
-	if (strcmp(ropt, 'n') == 0)
+	if (strcmp(argv[1], 'n') == 0)
 	{
 		if ((sem_id = semget(ipc_key, NS, IPC_CREAT | IPC_EXCL | 0666)) == -1) 
 		{ 
@@ -54,7 +53,7 @@ int main(int argc, char *argv[])
 	 		exit(1); 
 	 	} 
  	}
- 	else if (strcmp(ropt, 'r') == 0)
+ 	else if (strcmp(argv[1], 'r') == 0)
  	{
  		if ((sem_id = semget(ipc_key, NS, IPC_CREAT | 0666)) == -1) 
 		{ 
