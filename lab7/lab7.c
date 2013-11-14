@@ -8,8 +8,9 @@
 # define NS 3 
 # include <time.h>
  
- //TEST
-union semun { 
+ 
+union semun 
+{ 
 	int val; struct semid_ds *buf; ushort *array; 
 }; 
 int main(void) 
@@ -21,7 +22,7 @@ int main(void)
 	ipc_key = ftok(".", 'S'); 
  
 	/* Create semaphore */ 
-	if ((sem_id = semget(ipc_key, NS, IPC_CREAT | 0666)) == -1) 
+	if ((sem_id = semget(ipc_key, NS, IPC_CREAT| IPC_EXCL | 0666)) == -1) 
 	{ 
 		perror ("semget: IPC | 0666"); 
  		exit(1); 
