@@ -25,14 +25,15 @@ int main(int argc, char *argv[])
 { 
 	int sem_id, sem_value, i, j, NS, count; 
 	key_t ipc_key; 
-
 	struct semid_ds sem_buf; 
-	ushort sem_array[NS]; 
 	union semun arg; 
+
 	ipc_key = ftok(".", 'S'); 
 	
 	NS = atoi(argv[2]);
 
+	ushort sem_array[NS]; 
+	
 	for (j=0;j<NS;++j)
 	{
 		sem_array[j] = (unsigned short) strtoul(argv[j+3], NULL, 0);
