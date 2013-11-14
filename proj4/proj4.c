@@ -29,16 +29,15 @@ int main(int argc, char *argv[])
 	union semun arg; 
 
 	ipc_key = ftok(".", 'S'); 
-	
-	NS = atoi(argv[2]);
-
-	ushort sem_array[NS]; 
-
 	if (argc < 4)
 	{
 		printf("Invalid input.  The number of arguments must be at least 4.\n");
 		exit(1);
 	}
+	
+	NS = atoi(argv[2]);
+
+	ushort sem_array[NS]; 
 
 	if (argc != (NS + 3))
 	{
