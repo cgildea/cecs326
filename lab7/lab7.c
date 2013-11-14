@@ -6,8 +6,9 @@
 # include <unistd.h> 
 # include <stdlib.h> 
 # define NS 3 
+# include <time.h>
  
- 
+ //TEST
 union semun { 
 	int val; struct semid_ds *buf; ushort *array; 
 }; 
@@ -35,7 +36,7 @@ int main(void)
  	perror ("semctl: IPC_STAT"); 
  	exit(2); 
  	} 
- 	printf ("Create %d", ctime(&sem_buf.sem_ctime)); 
+ 	printf ("Create %s", ctime(&sem_buf.sem_ctime)); 
  
  	/* Set arg (the union) to the address of the initializing vector */ 
  	arg.array = sem_array; 
