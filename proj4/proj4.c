@@ -108,5 +108,6 @@ int main(int argc, char *argv[])
  		perror ("semctl: IPC_RMID"); 
  		exit(5); 
  	}*/
+  exit(0);
 } 
 
