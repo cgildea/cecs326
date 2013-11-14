@@ -23,22 +23,24 @@ union semun
 }; 
 int main(int argc, char *argv[]) 
 { 
-	int sem_id, sem_value, i, j, NS; 
-	key_t ipc_key; 
-	struct semid_ds sem_buf; 
+	int sem_id, sem_value, i, j, NS;	// Semaphore ID, Semaphore value, i and j for for statement, Number of Semaphores
+	key_t ipc_key; 						// Key for Semaphore
+	struct semid_ds sem_buf;			// Allows access for Semaphore set and reference to the array of type sem 			
 	union semun arg; 
 
-	ipc_key = ftok(".", 'S'); 
+	ipc_key = ftok(".", 'S'); 			// Generate a key from a pathname
+
+	/* Check input arguments are at least 4 */
 	if (argc < 4)
 	{
 		printf("Invalid input.  The number of arguments must be at least 4.\n");
 		exit(1);
 	}
 	
-	NS = atoi(argv[2]);
+	NS = atoi(argv[2]);					// Number of Semaphores, argument 3
+	ushort sem_array[NS]; 				// Declare Semaphore array with number of Semaphores
 
-	ushort sem_array[NS]; 
-
+	/* Check to see if the number of values matches the number of Semaphores */
 	if (argc != (NS + 3))
 	{
 		printf("Invalid input.  The number of semaphores, %d must equal the number of values.\n", NS);
@@ -46,7 +48,7 @@ int main(int argc, char *argv[])
 	}
 
 	/* Create semaphore */ 
-	if (strcmp(argv[1], "n") == 0)
+	if (strcmp(argv[1], "n") == 0) 		// Create Semaphore without remove
 	{
 		if ((sem_id = semget(ipc_key, NS, IPC_CREAT | 0666 | IPC_EXCL)) == -1) 
 		{ 
@@ -54,7 +56,7 @@ int main(int argc, char *argv[])
 	 		exit(1); 
 	 	} 
  	}
- 	else if (strcmp(argv[1], "r") == 0)
+ 	else if (strcmp(argv[1], "r") == 0)	// Create Semaphore with remove
  	{
  		if ((sem_id = semget(ipc_key, NS, IPC_CREAT | 0666)) == -1) 
 		{ 
@@ -62,17 +64,19 @@ int main(int argc, char *argv[])
 	 		exit(1); 
 	 	} 
  	}
+ 	/* Throw error if 2nd argument is not 'r' or 'n' */
  	else
 	{
 		printf("Invalid input for the second argument. %s should be 'n' or 'r'.\n", argv[1]);
 		exit(1);
 	}
 
+	/* Fill sem_array with unsigned short values from command line up to the number of Semaphores */
 	for (j=0;j<NS;j++)
 	{
 		sem_array[j] = (unsigned short) strtoul(argv[j+3], NULL, 0);
 	}
-
+	
  	printf ("Semaphore identifier %d\n", sem_id); 
 	/* Set arg (the union) to the address of the storage location for */ 
 	/* returned semid_ds value */ 
