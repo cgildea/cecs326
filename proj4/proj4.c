@@ -23,7 +23,7 @@ union semun
 }; 
 int main(int argc, char *argv[]) 
 { 
-	int sem_id, sem_value, i, j, NS, count; 
+	int sem_id, sem_value, i, j, NS; 
 	key_t ipc_key; 
 	struct semid_ds sem_buf; 
 	union semun arg; 
@@ -34,15 +34,15 @@ int main(int argc, char *argv[])
 
 	ushort sem_array[NS]; 
 
+	if (argc != (NS + 3))
+	{
+		printf("Invalid input.  The number of semaphores, %d must equal the number of values.\n", NS);
+		exit(1);
+	}
+
 	for (j=0;j<NS;j++)
 	{
 		sem_array[j] = (unsigned short) strtoul(argv[j+3], NULL, 0);
-		count++;
-	}
-	if (NS != count)
-	{
-		printf("Invalid input.  The number of semaphores, %d must equal the number of values, %d.\n", NS, count);
-		exit(1);
 	}
 
 	/* Create semaphore */ 
