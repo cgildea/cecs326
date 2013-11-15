@@ -63,6 +63,11 @@ int main(int argc, char *argv[])
 			perror ("semget: IPC | 0666"); 
 	 		exit(1); 
 	 	} 
+	 	if (semctl(sem_id, 0, IPC_RMID, 0) == -1) 
+		{ 
+ 			perror ("semctl: IPC_RMID"); 
+ 			exit(5); 
+ 		}
  	}
  	/* Throw error if 2nd argument is not 'r' or 'n' */
  	else
