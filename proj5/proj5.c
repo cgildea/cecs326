@@ -24,11 +24,8 @@ int main(int argc, char *argv[])
 	int N, opt, k;
 	key_t ipc_key; 						// Key for Semaphore
 	struct semid_ds sem_buf;			// Allows access for Semaphore set and reference to the array of type sem 			
-	union semun arg; 
 
-	int sem_init(sem_t *sem, semflg, sem_value);
-
-
+	
 	struct sembuf semwait[1]; 
  	struct sembuf semsignal[1];
 
