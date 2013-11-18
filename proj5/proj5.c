@@ -73,6 +73,9 @@ int main(int argc, char *argv[])
 		}
 		if(i>0)
 		printf("\ni: %d: process ID: %6ld parent ID: %6ld child ID: %6ld",i,(long)getpid(), (long)getppid(), (long)childpid);
+		else{
+			sleep(2);
+		}
  	}
  	else if (strcmp(argv[2], "s") == 0)
  	{
