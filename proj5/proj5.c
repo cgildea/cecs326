@@ -75,7 +75,7 @@ int main(int argc, char *argv[])
 				break; 
 		}
 		if(i>0)
-		printf("\ni: %d: process ID: %6ld parent ID: %6ld child ID: %6ld",i,(long)getpid(), (long)getppid(), (long)childpid);
+		printf("i: %d: process ID: %6ld parent ID: %6ld child ID: %6ld\n\n",i,(long)getpid(), (long)getppid(), (long)childpid);
 		else{
 			sleep(2);
 		}
