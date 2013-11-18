@@ -57,7 +57,7 @@ int main(int argc, char *argv[])
  	struct sembuf semsignal[1];
 
  	/* Initialize semaphore element to 1 */ 
- 	set_sembuf_struct(semwait, 0, -1, 0); 
+ 	set_sembuf_struct(semwait, 0, 1, 0); 
  	set_sembuf_struct(semsignal, 0, 1, 0); 
 
 
@@ -68,11 +68,10 @@ int main(int argc, char *argv[])
 	if (strcmp(argv[2], "n") == 0) 		
 	{
 		childpid = 0;
-		for(i = 1; i < N; ++i){
+		for(i = 0; i < N; ++i){
 			if(childpid = fork()) break; 
 		}
-		printf("\ni: %d: process ID: %6ld parent ID: %6ld child ID: %6ld",i,(long)getpid(),
-                	(long)getppid(), (long)childpid);
+		printf("\ni: %d: process ID: %6ld parent ID: %6ld child ID: %6ld",i,(long)getpid(), (long)getppid(), (long)childpid);
  	}
  	else if (strcmp(argv[2], "s") == 0)
  	{
