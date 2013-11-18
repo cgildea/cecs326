@@ -13,6 +13,7 @@
 # include <unistd.h> 
 # include <stdlib.h> 
 # include <time.h>
+# include <errno.h>
  
  
 void set_sembuf_struct(struct sembuf *s, int semnum, int semop, int semflg);
@@ -20,7 +21,7 @@ void set_sembuf_struct(struct sembuf *s, int semnum, int semop, int semflg);
 int main(int argc, char *argv[]) 
 { 
 	pid_t pid, ppid, childpid;                 		 // For child process
-	int sem_id, semop_ret, sem_value, i, j;			 // Semaphore ID, Semaphore value, i and j for for statement
+	int semid, semop_ret, sem_value, i, j;			 // Semaphore ID, Semaphore value, i and j for for statement
 	int N, k;
 	char opt;
 	key_t ipc_key; 									// Key for Semaphore
@@ -97,9 +98,9 @@ int main(int argc, char *argv[])
 } 
 void set_sembuf_struct(struct sembuf *s, int num, int op, int flg) 
  { 
- 	s *sem_num = (short) num; 
- 	s *sem_op = op; 
-	s *sem_flg = flg; 
+ 	s->sem_num = (short) num; 
+ 	s->sem_op = op; 
+	s->sem_flg = flg; 
  	return; 
  };
 
