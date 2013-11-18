@@ -19,13 +19,38 @@ void set_sembuf_struct(struct sembuf *s, int semnum, int semop, int semflg);
 
 int main(int argc, char *argv[]) 
 { 
-	pid_t pid, ppid, childpid;                 		  // For child process
-	int sem_id, sem_value, i, j;	// Semaphore ID, Semaphore value, i and j for for statement
-	int N, opt, k;
-	key_t ipc_key; 						// Key for Semaphore
-	struct semid_ds sem_buf;			// Allows access for Semaphore set and reference to the array of type sem 			
+	pid_t pid, ppid, childpid;                 		 // For child process
+	int sem_id, semop_ret, sem_value, i, j;			 // Semaphore ID, Semaphore value, i and j for for statement
+	int N, k;
+	char opt;
+	key_t ipc_key; 									// Key for Semaphore
+	struct semid_ds sem_buf;						// Allows access for Semaphore set and reference to the array of type sem 	
 
-	
+	/* Check input arguments are 4 */
+	if (argc != 4)
+	{
+		printf("Invalid input.  The number of arguments must be 4.\n");
+		exit(1);
+	}
+	if(atoi(argv[1]) > 0)
+		N = atoi(argv[1]);
+	else
+	{
+		printf("Invalid input. %d(N) must be greater then 0.\n", atoi(argv[1]));
+		exit(1);
+	}
+
+	if(atoi(argv[3]) > 0)
+		k = atoi(argv[3]);
+	else
+	{
+		printf("Invalid input. %d(k) must be greater then 0.\n", atoi(argv[3]));
+		exit(1);
+	}
+
+
+
+
 	struct sembuf semwait[1]; 
  	struct sembuf semsignal[1];
 
@@ -36,18 +61,13 @@ int main(int argc, char *argv[])
 
 	ipc_key = ftok(".", 'S'); 			// Generate a key from a pathname
 
-	/* Check input arguments are 4 */
-	if (argc != 4)
-	{
-		printf("Invalid input.  The number of arguments must be 4.\n");
-		exit(1);
-	}
+	
 	/* Create semaphore */ 
 	if (strcmp(argv[2], "n") == 0) 		
 	{
 		childpid = 0;
 		for(i = 1; i < N; ++i)
-			if((childpid = fork()) == 0) break;
+			if(childpid = fork()) break; 
 			printf("\ni: %d: process ID: %6ld parent ID: %6ld child ID: %6ld",i,(long)getpid(),
                 	(long)getppid(), (long)childpid);
  	}
@@ -59,7 +79,7 @@ int main(int argc, char *argv[])
 		else
 	 		childpid = 0;
 			for(i = 1; i < N; ++i)
-				if((childpid = fork()) == 0) break;
+				if(childpid = fork()) break;
 				printf("\ni: %d: process ID: %6ld parent ID: %6ld child ID: %6ld",i,(long)getpid(),
 	                	(long)getppid(), (long)childpid);
 		while (((semop_ret = semop(semid, semsignal, 1)) == -1) && (errno == EINTR)); 
