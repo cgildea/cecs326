@@ -14,7 +14,7 @@
 # include <stdlib.h> 
 # include <time.h>
 # include <errno.h>
-# include <strerror>
+ #include <string.h>
  
  
 void set_sembuf_struct(struct sembuf *s, int semnum, int semop, int semflg);
