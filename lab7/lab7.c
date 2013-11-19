@@ -1,4 +1,10 @@
-
+/**************************************************************************/ 
+/* PROGRAM NAME: lab7.c                                                   */
+/* CLASS:        CECS-326                                                 */
+/* INSTRUCTOR:   Mr. Haney Williams                                       */
+/* STUDENTS:     Cody Gildea                                              */                                            
+/* DESCRIPTION: This program utilizes creating and removing semaphores	  */
+/**************************************************************************/ 
 # include <stdio.h> 
 # include <sys/types.h> 
 # include <sys/ipc.h> 
@@ -15,11 +21,12 @@ union semun
 }; 
 int main(void) 
 { 
-	int sem_id, sem_value, i; key_t ipc_key; 
-	struct semid_ds sem_buf; 
+	int sem_id, sem_value, i; 								// Semaphore ID, Semaphore value, i for for statement
+	key_t ipc_key;											// Key for Semaphore
+	struct semid_ds sem_buf; 								// Allows access for Semaphore set and reference to the array of type sem
 	static ushort sem_array[NS] = {3, 1, 4}; 
 	union semun arg; 
-	ipc_key = ftok(".", 'S'); 
+	ipc_key = ftok(".", 'S'); 								// Generate a key from a pathname
  
 	/* Create semaphore */ 
 	if ((sem_id = semget(ipc_key, NS, IPC_CREAT| IPC_EXCL | 0666)) == -1) 
