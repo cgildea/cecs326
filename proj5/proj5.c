@@ -21,7 +21,7 @@ void set_sembuf_struct(struct sembuf *s, int semnum, int semop, int semflg);
 
 int main(int argc, char *argv[]) 
 { 
-	pid_t pid, ppid, childpid;                 		 // For child process
+	pid_t pid, childpid;                 		 // For child process
 	int semid, semop_ret, sem_value, i, j;			 // Semaphore ID, Semaphore value, i and j for for statement
 	int N, k;
 	char opt;
@@ -35,7 +35,10 @@ int main(int argc, char *argv[])
 		exit(1);
 	}
 	if(atoi(argv[1]) > 0)
+	{
 		N = atoi(argv[1]);
+		pid_t ppid[N];
+	}
 	else
 	{
 		printf("Invalid input. %d(N) must be greater then 0.\n", atoi(argv[1]));
@@ -66,7 +69,7 @@ int main(int argc, char *argv[])
 	
 	/* Create semaphore */ 
 	if (strcmp(argv[2], "n") == 0) 		
-	{
+	{/*
 		childpid = 0;
 		for(i = 0; i < N; ++i){
 			if((childpid = fork()) == 0) 
@@ -78,7 +81,20 @@ int main(int argc, char *argv[])
 		printf("i: %d: process ID: %6ld parent ID: %6ld child ID: %6ld\n\n",i,(long)getpid(), (long)getppid(), (long)childpid);
 		else{
 			sleep(2);
-		}
+		}*/
+		for (i = 0; i < N; ++i) {
+                pids[i] = fork();
+                if (pids[i] == 0) {
+                        sleep(i+1);
+                        _exit(0);
+                }
+        }
+ 
+        for (i = 0; i < N; ++i)
+                waitpid(pids[i], NULL, 0);
+ 		printf("i: %d: process ID: %6ld parent ID: %6ld child ID: %6ld\n\n",i+1,(long)getpid(), (long)getppid(), (long)childpid);
+
+
  	}
  	else if (strcmp(argv[2], "s") == 0)
  	{
