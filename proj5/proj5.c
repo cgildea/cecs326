@@ -16,6 +16,11 @@
 # include <errno.h>
 # include <string.h>
 # include <sys/wait.h>
+
+#ifndef MAX_CANON
+#define MAX_CANON 8192
+#endif
+
  
  
 void set_sembuf_struct(struct sembuf *s, int semnum, int semop, int semflg);
@@ -25,7 +30,7 @@ int main(int argc, char *argv[])
 	pid_t pid, ppid, childpid, k;                 		 // For child process
 	int semid, semop_ret, sem_value, i, j;			 // Semaphore ID, Semaphore value, i and j for for statement
 	int N, status;
-	char opt;
+	char opt, buf_num[MAX_CANON];
 	key_t ipc_key; 									// Key for Semaphore
 	struct semid_ds sem_buf;						// Allows access for Semaphore set and reference to the array of type sem 	
 
@@ -60,7 +65,7 @@ int main(int argc, char *argv[])
  	struct sembuf semsignal[1];
 
  	/* Initialize semaphore element to 1 */ 
- 	set_sembuf_struct(semwait, 0, 1, 0); 
+ 	set_sembuf_struct(semwait, 0, -1, 0); 
  	set_sembuf_struct(semsignal, 0, 1, 0); 
 
 
@@ -78,16 +83,12 @@ int main(int argc, char *argv[])
 				break; 
 		}
 		if(i>0)
-		printf("i: %d: process ID: %6ld parent ID: %6ld child ID: %6ld\n\n",i,(long)getpid(), (long)getppid(), (long)childpid);
-		else{
+		sprintf(buf_num,"i: %d: process ID: %6ld parent ID: %6ld child ID: %6ld\n\n",i,(long)getpid(), (long)getppid(), (long)childpid);
 			while ((k=wait(&status)) && k != - 1)
         	{
                 if(k != -1) 
-                        printf(" Waiting ");
+                        //printf(" Waiting ");
         	}
-		}
-
-
  	}
  	else if (strcmp(argv[2], "s") == 0)
  	{
