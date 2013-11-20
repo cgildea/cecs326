@@ -82,8 +82,8 @@ int main(int argc, char *argv[])
 			else
 				break; 
 		}
-		if(i>0)
-		sprintf(buf_num,"i: %d: process ID: %6ld parent ID: %6ld child ID: %6ld\n\n",i,(long)getpid(), (long)getppid(), (long)childpid);
+		//if(i>0)
+		sprintf(buf_num,"i: %d: process ID: %6ld parent ID: %6ld child ID: %6ld",i,(long)getpid(), (long)getppid(), (long)childpid);
 
 		c_ptr = buf_num;
 
@@ -92,7 +92,7 @@ int main(int argc, char *argv[])
 		{
 			fputc(*c_ptr, stderr);
 
-			
+
 			c_ptr++;
 		}
 
