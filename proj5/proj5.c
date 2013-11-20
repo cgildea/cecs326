@@ -83,7 +83,7 @@ int main(int argc, char *argv[])
 				break; 
 		}
 		if(i>0)
-		sprintf(buf_num,"i: %d: process ID: %6ld parent ID: %6ld child ID: %6ld\n\n",i,(long)getpid(), (long)getppid(), (long)childpid);
+		sprintf(buf_num,"i: %d: process ID: %6ld parent ID: %6ld child ID: %6ld\n\n\0",i,(long)getpid(), (long)getppid(), (long)childpid);
 		printf("%s", buf_num);
 			/*while ((k=wait(&status)) && k != - 1)
         	{
