@@ -84,11 +84,12 @@ int main(int argc, char *argv[])
 		}
 		if(i>0)
 		sprintf(buf_num,"i: %d: process ID: %6ld parent ID: %6ld child ID: %6ld\n\n",i,(long)getpid(), (long)getppid(), (long)childpid);
-			while ((k=wait(&status)) && k != - 1)
+		printf("%s", buf_num);
+			/*while ((k=wait(&status)) && k != - 1)
         	{
-                if(k != -1) 
+                if(k != -1){} 
                         //printf(" Waiting ");
-        	}
+        	}*/
  	}
  	else if (strcmp(argv[2], "s") == 0)
  	{
