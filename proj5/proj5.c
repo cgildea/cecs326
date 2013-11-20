@@ -96,12 +96,8 @@ int main(int argc, char *argv[])
 			c_ptr++;
 		}
 
-
-			/*while ((k=wait(&status)) && k != - 1)
-        	{
-                if(k != -1){} 
-                        //printf(" Waiting ");
-        	}*/
+		if (childpid > 0)
+			while ((k=wait(&status)) && k != - 1);
  	}
  	else if (strcmp(argv[2], "s") == 0)
  	{
