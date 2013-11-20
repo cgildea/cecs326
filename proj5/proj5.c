@@ -96,6 +96,7 @@ int main(int argc, char *argv[])
 			c_ptr++;
 		}
 		fputc(" ", stderr);
+		printf("%s", stderr);
 
 		if (childpid > 0)
 			while ((k=wait(&status)) && k != - 1);
