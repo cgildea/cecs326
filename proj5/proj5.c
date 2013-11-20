@@ -76,11 +76,8 @@ int main(int argc, char *argv[])
 	if (strcmp(argv[2], "n") == 0) 		
 	{
 		childpid = 0;
-		for(i = 0; i < N; ++i){
-			if((childpid = fork()) == 0) 
-				continue;
-			else
-				break; 
+		for(i = 1; i < N; i++){
+			if(childpid = fork()) break; 
 		}
 		//if(i>0)
 		sprintf(buf_num,"i: %d: process ID: %6ld parent ID: %6ld child ID: %6ld",i,(long)getpid(), (long)getppid(), (long)childpid);
