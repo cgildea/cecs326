@@ -90,7 +90,10 @@ int main(int argc, char *argv[])
 
 		while (*c_ptr != '\0')
 		{
-			fputc(*c_ptr, ferror);
+			fputc(*c_ptr, stderr);
+
+			
+			c_ptr++;
 		}
 
 
