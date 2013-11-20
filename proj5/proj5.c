@@ -30,7 +30,7 @@ int main(int argc, char *argv[])
 	pid_t pid, ppid, childpid, k;                 		 // For child process
 	int semid, semop_ret, sem_value, i, j;			 // Semaphore ID, Semaphore value, i and j for for statement
 	int N, status;
-	char opt, buf_num[MAX_CANON];
+	char opt, buf_num[MAX_CANON], *c_ptr;
 	key_t ipc_key; 									// Key for Semaphore
 	struct semid_ds sem_buf;						// Allows access for Semaphore set and reference to the array of type sem 	
 
@@ -83,8 +83,17 @@ int main(int argc, char *argv[])
 				break; 
 		}
 		if(i>0)
-		sprintf(buf_num,"i: %d: process ID: %6ld parent ID: %6ld child ID: %6ld\n\n\0",i,(long)getpid(), (long)getppid(), (long)childpid);
-		printf("%s", buf_num);
+		sprintf(buf_num,"i: %d: process ID: %6ld parent ID: %6ld child ID: %6ld\n\n",i,(long)getpid(), (long)getppid(), (long)childpid);
+
+		c_ptr = buf_num;
+
+
+		while (*c_ptr != '\0')
+		{
+			fputc(*c_ptr, ferror);
+		}
+
+
 			/*while ((k=wait(&status)) && k != - 1)
         	{
                 if(k != -1){} 
