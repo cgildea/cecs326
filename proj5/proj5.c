@@ -29,7 +29,7 @@ int main(int argc, char *argv[])
 { 
 	pid_t pid, ppid, childpid, k;                 		 // For child process
 	int semid, semop_ret, sem_value, i, j;			 // Semaphore ID, Semaphore value, i and j for for statement
-	int N, status;
+	int N, status, c1, c2;
 	char opt, buf_num[MAX_CANON], *c_ptr;
 	key_t ipc_key; 									// Key for Semaphore
 	struct semid_ds sem_buf;						// Allows access for Semaphore set and reference to the array of type sem 	
@@ -92,7 +92,10 @@ int main(int argc, char *argv[])
 		{
 			fputc(*c_ptr, stderr);
 
-
+			for(c1 = 0; c1 < k; c1++)
+			{
+				for(c2=0 c2 < 50000; c2++)
+			}
 			c_ptr++;
 		}
 
