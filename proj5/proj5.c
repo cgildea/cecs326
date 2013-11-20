@@ -94,7 +94,7 @@ int main(int argc, char *argv[])
 
 			for(c1 = 0; c1 < k; c1++)
 			{
-				for(c2=0 c2 < 50000; c2++)
+				for(c2=0 c2 < 50000; c2++);
 			}
 			c_ptr++;
 		}
