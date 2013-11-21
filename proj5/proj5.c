@@ -88,6 +88,7 @@ int main(int argc, char *argv[])
 		while (*c_ptr != '\0')
 		{
 			fputc(*c_ptr, stderr);
+			//printf("%c", *c_ptr);
 
 			for(c1 = 0; c1 < k; c1++)
 			{
@@ -96,7 +97,7 @@ int main(int argc, char *argv[])
 			c_ptr++;
 		}
 		fputc(" ", stderr);
-		printf("%s", stderr);
+		printf("%s", *c_ptr);
 
 		if (childpid > 0)
 			while ((k=wait(&status)) && k != - 1);
