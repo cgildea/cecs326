@@ -22,17 +22,18 @@
 #endif
 
  
- 
+// Function Prototypes
 void set_sembuf_struct(struct sembuf *s, int semnum, int semop, int semflg);
 
+// Main
 int main(int argc, char *argv[]) 
 { 
-	pid_t pid, ppid, childpid, k;                 		 // For child process
-	int semid, semop_ret, sem_value, i, j;			 // Semaphore ID, Semaphore value, i and j for for statement
+	pid_t pid, ppid, childpid, k;                 	 // For child process
+	int semid, semop_ret, sem_value, i, j;		 // Semaphore ID, Semaphore value, i and j for for statement
 	int N, status, c1, c2;
 	char opt, buf_num[MAX_CANON], *c_ptr;
-	key_t ipc_key; 									// Key for Semaphore
-	struct semid_ds sem_buf;						// Allows access for Semaphore set and reference to the array of type sem 	
+	key_t ipc_key; 					// Key for Semaphore
+	struct semid_ds sem_buf;			// Allows access for Semaphore set and reference to the array of type sem 	
 
 	/* Check input arguments are 4 */
 	if (argc != 4)
@@ -57,10 +58,10 @@ int main(int argc, char *argv[])
 		printf("Invalid input. %d(k) must be greater then 0.\n", atoi(argv[3]));
 		exit(1);
 	}
+	/* End input argument check */
 
 
-
-
+	/* Implementing wait() and signal() */
 	struct sembuf semwait[1]; 
  	struct sembuf semsignal[1];
 
@@ -68,6 +69,15 @@ int main(int argc, char *argv[])
  	set_sembuf_struct(semwait, 0, -1, 0); 
  	set_sembuf_struct(semsignal, 0, 1, 0); 
 
+/*	// Additional code of wait() and signal() from specifications.  Not sure if necessary. 
+	if (semop(semid, semsignal, 1) == -1)
+	{
+		printf("%1d: semaphore increment failed - %s\n", (long)getpid(), strerror(errno));
+		if(semctl(semid, 0, IPC_RMID) == - 1)
+			printf("%1d: could not delete semaphore - %s]n",(long)getpid(), strerror(errno));
+		exit(1);
+	}
+*/
 
 	ipc_key = ftok(".", 'S'); 			// Generate a key from a pathname
 
@@ -126,6 +136,8 @@ int main(int argc, char *argv[])
 	}
   exit(0);
 } 
+
+/*  set_sembuf_struct() function to initialize struct sembuf structure members sem_num, sem_op, sem_flg */
 void set_sembuf_struct(struct sembuf *s, int num, int op, int flg) 
  { 
  	s->sem_num = (short) num; 
@@ -133,4 +145,4 @@ void set_sembuf_struct(struct sembuf *s, int num, int op, int flg)
 	s->sem_flg = flg; 
  	return; 
  };
-
+/*  End set_sembuf_struct()
