@@ -41,6 +41,7 @@ int main(int argc, char *argv[])
 		printf("Invalid input.  The number of arguments must be 4.\n");
 		exit(1);
 	}
+	/* Check argument 1 to be N number of processes */
 	if(atoi(argv[1]) > 0)
 	{
 		N = atoi(argv[1]);
@@ -50,7 +51,31 @@ int main(int argc, char *argv[])
 		printf("Invalid input. %d(N) must be greater then 0.\n", atoi(argv[1]));
 		exit(1);
 	}
-
+	/* Check argument 2 to be opt "n" or "s" for semaphore protection */
+        if (strcmp(argv[2], "n") == 0)       // Create Semaphore without protection
+        {
+  /*              if ((sem_id = semget(ipc_key, NS, IPC_CREAT | 0666 | IPC_EXCL)) == -1) 
+                { 
+                        perror ("semget: IPC | 0666"); 
+                        exit(1); 
+                } */
+         }
+         else if (strcmp(argv[2], "s") == 0) // Create Semaphore with protection
+         {
+/*                 if ((sem_id = semget(ipc_key, NS, IPC_CREAT | 0666)) == -1) 
+                { 
+                        perror ("semget: IPC | 0666"); 
+                        exit(1); 
+                } */
+         }
+         /* Throw error if argument 2 is not 'n' or 's' */
+         else
+        {
+                printf("Invalid input for the second argument. %s should be 'n' or 's'.\n", 
+                       argv[1]);
+                exit(1);
+        }
+	/* Check argument 3 to be k integer delay adjustment */
 	if(atoi(argv[3]) > 0)
 		k = atoi(argv[3]);
 	else
@@ -145,4 +170,4 @@ void set_sembuf_struct(struct sembuf *s, int num, int op, int flg)
 	s->sem_flg = flg; 
  	return; 
  };
-/*  End set_sembuf_struct()
+/*  End set_sembuf_struct() */
