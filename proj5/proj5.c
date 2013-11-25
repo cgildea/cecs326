@@ -27,9 +27,9 @@ void set_sembuf_struct(struct sembuf *s, int semnum, int semop, int semflg);
 
 int main(int argc, char *argv[]) 
 { 
-	pid_t pid, ppid, childpid, k;                 		 // For child process
+	pid_t pid, ppid, childpid, w;                 		 // For child process
 	int semid, semop_ret, sem_value, i, j;			 // Semaphore ID, Semaphore value, i and j for for statement
-	int N, status, c1, c2;
+	int N, status, k;
 	char opt, buf_num[MAX_CANON], *c_ptr;
 	key_t ipc_key; 									// Key for Semaphore
 	struct semid_ds sem_buf;						// Allows access for Semaphore set and reference to the array of type sem 	
@@ -106,49 +106,51 @@ int main(int argc, char *argv[])
  	}
  	else if (strcmp(argv[2], "s") == 0)
  	{
- 		if ((semid = semget(ipc_key, 1, IPC_CREAT | IPC_EXCL | 0666)) == -1) 
+ 		for (j = 1, j < N; j++)
  		{
-            perror ("semget: IPC | 0666");
-            exit(1);
-        }
-        if(semop(semid, semsignal, 1) == -1) 
-        {
-               printf("%ld: semaphore increment failed - %s\n", (long)getpid(), strerror(errno)); 
-                       // try to delete the semaphore, if we can't increment it
-               if (semctl(semid, 0, IPC_RMID) == -1) 
-                       printf ("%ld: could not delete semaphore - %s\n", (long)getpid(), strerror(errno)); 
-               exit(1); 
-        }
+	 		if ((semid = semget(ipc_key, 1, IPC_CREAT | IPC_EXCL | 0666)) == -1) 
+	 		{
+	            perror ("semget: IPC | 0666");
+	            exit(1);
+	        }
+	        if(semop(semid, semsignal, 1) == -1) 
+	        {
+	               printf("%ld: semaphore increment failed - %s\n", (long)getpid(), strerror(errno)); 
+	               if (semctl(semid, 0, IPC_RMID) == -1) 
+	                       printf ("%ld: could not delete semaphore - %s\n", (long)getpid(), strerror(errno)); 
+	               exit(1); 
+	        }
 
-        while (( (semop_ret = semop(semid, semwait, 1) ) == -1) && (errno ==EINTR)); 
-        	if (semop_ret == -1) 
-            	printf ("%ld: semaphore decrement failed - %s\n", (long)getpid(), strerror(errno)); 
+	        while (( (semop_ret = semop(semid, semwait, 1) ) == -1) && (errno ==EINTR)); 
+	        	if (semop_ret == -1) 
+	            	printf ("%ld: semaphore decrement failed - %s\n", (long)getpid(), strerror(errno)); 
 
-        childpid = 0;
-		for(i = 1; i < N; i++){
-			if(childpid = fork()) break; 
-		}
-		sprintf(buf_num,"i: %d: process ID: %6ld parent ID: %6ld child ID: %6ld",i,(long)getpid(), (long)getppid(), (long)childpid);
+	        childpid = 0;
+			for(i = 1; i < N; i++){
+				if(childpid = fork()) break; 
+			}
+			sprintf(buf_num,"i: %d: process ID: %6ld parent ID: %6ld child ID: %6ld",i,(long)getpid(), (long)getppid(), (long)childpid);
 
-		c_ptr = buf_num;
-
-
-		while (*c_ptr != '\0')
-		{
-			setbuf(stdout, NULL);
-			fputc(*c_ptr, stderr);
-			usleep(k);
-			c_ptr++;
-		}
-
-		
-
-        while ( ( (semop_ret = semop(semid, semsignal, 1) ) == -1) && (errno == EINTR) ); 
-        if (semop_ret == -1) 
-                printf ("%ld: semaphore increment failed - %s\n", (long)getpid(), strerror(errno));
+			c_ptr = buf_num;
 
 
-         while ((w=wait(&status)) && w != - 1);
+			while (*c_ptr != '\0')
+			{
+				setbuf(stdout, NULL);
+				fputc(*c_ptr, stderr);
+				usleep(k);
+				c_ptr++;
+			}
+
+			
+
+	        while ( ( (semop_ret = semop(semid, semsignal, 1) ) == -1) && (errno == EINTR) ); 
+	        if (semop_ret == -1) 
+	                printf ("%ld: semaphore increment failed - %s\n", (long)getpid(), strerror(errno));
+
+
+	         while ((w=wait(&status)) && w != - 1);
+     	}
 
  	}
  	/* Throw error if 2nd argument is not 'r' or 'n' */
