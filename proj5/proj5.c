@@ -106,13 +106,14 @@ int main(int argc, char *argv[])
  	}
  	else if (strcmp(argv[2], "s") == 0)
  	{
- 		for (j = 1, j < N; j++)
- 		{
-	 		if ((semid = semget(ipc_key, 1, IPC_CREAT | IPC_EXCL | 0666)) == -1) 
-	 		{
+ 		if ((semid = semget(ipc_key, 1, IPC_CREAT | IPC_EXCL | 0666)) == -1) 
+	 	{
 	            perror ("semget: IPC | 0666");
 	            exit(1);
-	        }
+	    }
+ 		for (j = 1; j < N; j++)
+ 		{
+	 		
 	        if(semop(semid, semsignal, 1) == -1) 
 	        {
 	               printf("%ld: semaphore increment failed - %s\n", (long)getpid(), strerror(errno)); 
