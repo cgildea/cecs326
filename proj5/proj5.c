@@ -87,17 +87,17 @@ int main(int argc, char *argv[])
 
 		while (*c_ptr != '\0')
 		{
+			setbuf(stdout, NULL);
 			fputc(*c_ptr, stderr);
 			//printf("%c", *c_ptr);
-
+			/*
 			for(c1 = 0; c1 < k; c1++)
 			{
 				for(c2=0 c2 < 50000; c2++);
-			}
+			}*/
 			c_ptr++;
 		}
 		fputc(" ", stderr);
-		printf("%s", *c_ptr);
 
 		if (childpid > 0)
 			while ((k=wait(&status)) && k != - 1);
