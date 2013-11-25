@@ -116,7 +116,7 @@ int main(int argc, char *argv[])
 		        printf ("%ld: semaphore decrement failed - %s\n", (long)getpid(), strerror(errno)); 
 	}
 
-	sprintf(buf_num,"i: %d: process ID: %6ld parent ID: %6ld child ID: %6ld",i,(long)getpid(), (long)getppid(), (long)childpid);
+	sprintf(buf_num,"i: %d: process ID: %6ld parent ID: %6ld child ID: %6ld\n",i,(long)getpid(), (long)getppid(), (long)childpid);
 
 	c_ptr = buf_num;
 
