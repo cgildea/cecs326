@@ -79,7 +79,6 @@ int main(int argc, char *argv[])
 		for(i = 1; i < N; i++){
 			if(childpid = fork()) break; 
 		}
-		//if(i>0)
 		sprintf(buf_num,"i: %d: process ID: %6ld parent ID: %6ld child ID: %6ld",i,(long)getpid(), (long)getppid(), (long)childpid);
 
 		c_ptr = buf_num;
@@ -89,6 +88,9 @@ int main(int argc, char *argv[])
 		{
 			setbuf(stdout, NULL);
 			fputc(*c_ptr, stderr);
+
+			usleep(k);
+
 			//printf("%c", *c_ptr);
 			/*
 			for(c1 = 0; c1 < k; c1++)
@@ -97,7 +99,7 @@ int main(int argc, char *argv[])
 			}*/
 			c_ptr++;
 		}
-		fputc(" ", stderr);
+		//fputc(" ", stderr);
 
 		if (childpid > 0)
 			while ((k=wait(&status)) && k != - 1);
