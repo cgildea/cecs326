@@ -27,7 +27,8 @@ void main(int argc, char *argv[])
  	char buf[BUFSIZE]; 
  	unsigned strsize; 
  
- 	if (argc !=2) 
+ 	if (argc !=2)
+ 	/* Check input arguments are 2 */ 
  	{ 
  		printf ("\n Usage: %s pipename\n", argv[0]); 
  		exit(1); 
@@ -37,12 +38,12 @@ void main(int argc, char *argv[])
  		/* success: 0, failure: -1, sets errno. mkfifo 
 		creates the FIFO file referenced by path; mode: File mode bits: 
 		S_IRUSR read permission, owner. S_IWUSR write permission, owner */
- 	{ 
+ 	{ /* Pipe error*/
  		perror ("Pipe"); 
  		exit(1); 
  	} 
  	if (( child = fork()) == -1) 
- 	{ 
+ 	{ /* Fork error*/
  		perror ("Fork"); 
  		exit(1); 
  	} 
@@ -50,7 +51,7 @@ void main(int argc, char *argv[])
  	{ 
  		printf ("\n Child %ld is about to open FIFO %s\n", (long)getpid(), argv[1]); 
  		if ((fd = open(argv[1], O_WRONLY)) == -1) /* Open for writing only*/
- 		{
+ 		{ /* Open error*/
  			perror("Child cannot open FIFO"); 
  			exit(1);
  		} 
@@ -61,7 +62,7 @@ void main(int argc, char *argv[])
 	 		/* success: number of bytes written, 
 			failure: -1, sets errno. Write nbyte bytes from the buffer 
 			referenced by buf using the file descriptor pecified by filedes. */
-	 	{ 
+	 	{ /* Write error*/
 	 		printf("Child write to FIFO failed\n"); 
 	 		exit(1); 
 	 	} 
@@ -72,7 +73,7 @@ void main(int argc, char *argv[])
  	/* parent does a read */ 
 	 	printf ("Parent %ld is about to open FIFO %s\n", (long) getpid(), argv[1]); 
 	 	if ((fd = open(argv[1], O_RDONLY | O_NONBLOCK)) == -1) /* Open for reading only*/
-		{ 
+		{ /* Open error*/
 	 		perror("Parent cannot open FIFO"); 
 			exit(1); 
 		} 
@@ -83,7 +84,7 @@ void main(int argc, char *argv[])
 		 	All reads are initiated from current position. Read nbyte bytes 
 		 	from the open file associated with the file descriptor filedes 
 		 	into the buffer referenced by buf. */
-		 	{ 
+		 	{ /* Read error*/
 		 		perror("Parent read from FIFO failed\n");
 		 		exit(1); 
 		 	} 
