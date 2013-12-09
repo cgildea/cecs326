@@ -184,7 +184,6 @@ void main(int argc, char *argv[])
                     perror ("Write"); 
                     exit(5); 
                 } 
-            } 
         }
     }
     exit(0); 
