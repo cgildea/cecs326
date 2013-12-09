@@ -33,12 +33,12 @@ void main(int argc, char *argv[])
     int i,k, n, status, order; 
     pid_t childpid;                     // For child process ID
     char *inputMessage;
-    /*
+    
     if (argc < 4 || argc > 5) 
     { 
         printf ("\n Invalid input. Arguments must be 4 or 5\n"); 
         exit(1);
-    } */
+    }
     if(strcmp(argv[1], "n") == 0)
     {
         if (argc != 5) 
@@ -62,7 +62,7 @@ void main(int argc, char *argv[])
         }
         else
         {
-            printf("Invalid input for the order of the pipe.");
+            printf("\nInvalid input for the order of the pipe.\n");
             exit(1);
         }
         inputMessage = argv[4];
@@ -90,14 +90,14 @@ void main(int argc, char *argv[])
         }
         else
         {
-            printf("Invalid input for the order of the pipe.");
+            printf("\nInvalid input for the order of the pipe.\n");
             exit(1);
         }
         inputMessage = argv[3];
     }
     else
     {
-        printf("Invalid input for the second argument. %s should be 'n' or 'u'.\n", argv[1]);
+        printf("\nInvalid input for the second argument. %s should be 'n' or 'u'.\n", argv[1]);
         exit(1);
     }
 
@@ -118,39 +118,85 @@ void main(int argc, char *argv[])
                 perror ("Fork"); 
                 exit(3); 
             case 0: /* In the child */ 
+                /*
                 close(f_des[0]); 
                 if (write(f_des[1], inputMessage, strlen(inputMessage)) != -1)
                 /* success: number of bytes written, 
                 failure: -1, sets errno. Write nbyte bytes from the buffer 
                 referenced by buf using the file descriptor pecified by filedes. */
-                { 
-                    printf ("Message sent by child: [%s]\n", inputMessage);
+                /*{ 
+                    printf ("Child %ld is about to send the message [%s] to ", (long)getpid(), inputMessage);
+                    if (strcmp(argv[1], "n") == 0) 
+                        printf("%s\n", argv[2]);
+                    else
+                        printf("FIFO\n");
                     fflush(stdout); 
                 } 
                 else 
-                { /* Write error*/
-                    perror ("Write"); 
+                { 
+                  perror ("Write"); 
                     exit(5); 
+                } */
+
+
+                printf ("\n Child %ld is about to open FIFO %s\n", (long)getpid(), argv[1]); 
+                if ((fd = open(argv[1], O_WRONLY)) == -1) /* Open for writing only*/
+                { /* Open error*/
+                    perror("Child cannot open FIFO"); 
+                    exit(1);
                 } 
+                /* In the child */ 
+                sprintf (buf, "This was written by child %ld\n", (long)getpid()); 
+                strsize = strlen(buf) + 1; 
+                if (write(fd, buf, strsize) != strsize) 
+                    /* success: number of bytes written, 
+                    failure: -1, sets errno. Write nbyte bytes from the buffer 
+                    referenced by buf using the file descriptor pecified by filedes. */
+                { /* Write error*/
+                    printf("Child write to FIFO failed\n"); 
+                    exit(1); 
+                } 
+                printf ("Child %ld is done\n", (long)getpid());
+
+
                 break; 
             default: /* In the parent */ 
                 //while ((wait(&status) == -1) && (errno == EINTR));
+                /*
                 close(f_des[1]); 
                 if (read(f_des[0], message, BUFSIZ) != -1) 
                 /* success: number of bytes read, failure: -1, sets errno. 
                 All reads are initiated from current position. Read nbyte bytes 
                 from the open file associated with the file descriptor filedes 
                 into the buffer referenced by buf. */
-                { 
+              /*  { 
                     printf ("Message received by parent: *%s*\n", message); 
                     fflush(stdout); 
                 } 
                 else 
-                { /* Read error*/
+                { 
                     perror ("Read"); 
                     exit(4);
-                }   
-        }
+                }   */
+                printf ("Parent %ld is about to open FIFO %s\n", (long) getpid(), argv[1]); 
+                if ((fd = open(argv[1], O_RDONLY | O_NONBLOCK)) == -1) /* Open for reading only*/
+                { /* Open error*/
+                    perror("Parent cannot open FIFO"); 
+                    exit(1); 
+                } 
+                printf ("Parent is about to read\n", (long)getpid()); 
+                while ((wait(&status) == -1) && (errno == EINTR)); /* EINTR -> interrupted system call*/
+                    if (read(fd, buf, BUFSIZE) <=0) 
+                    /* success: number of bytes read, failure: -1, sets errno. 
+                    All reads are initiated from current position. Read nbyte bytes 
+                    from the open file associated with the file descriptor filedes 
+                    into the buffer referenced by buf. */
+                    { /* Read error*/
+                        perror("Parent read from FIFO failed\n");
+                        exit(1); 
+                    } 
+                printf ("Parent %ld received: %s\n", (long)getpid(), buf); 
+        }        
     } 
     else if (order == 1)
     {
@@ -160,10 +206,11 @@ void main(int argc, char *argv[])
                 perror ("Fork"); 
                 exit(3); 
             case 0: /* In the child */ 
+                /*
                 close(f_des[1]); 
                 if (read(f_des[0], message, BUFSIZ) != -1) 
                 { 
-                    printf ("Message received by child: *%s*\n", message); 
+                    printf ("Child %ld receives by child: *%s*\n", message); 
                     fflush(stdout); 
                 } 
                 else 
@@ -172,18 +219,24 @@ void main(int argc, char *argv[])
                     exit(4);
                 } 
                 break; 
+                */
             default: /* In the parent */ 
+                /*
                 close(f_des[0]); 
                 if (write(f_des[1], inputMessage, strlen(inputMessage)) != -1)
                 { 
-                    printf ("Message sent by parent: [%s]\n", inputMessage); 
+                    printf ("Parent is about to send the message [%s] to ", inputMessage);
+                    if (strcmp(argv[1], "n") == 0) 
+                        printf("%s\n", argv[2]); 
+                    else
+                        printf("FIFO\n");
                     fflush(stdout); 
                 } 
                 else 
                 { 
                     perror ("Write"); 
                     exit(5); 
-                } 
+                } */
         }
     }
     exit(0); 
