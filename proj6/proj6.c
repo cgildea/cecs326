@@ -65,7 +65,7 @@ void main(int argc, char *argv[])
             printf("Invalid input for the order of the pipe.");
             exit(1);
         }
-        inputMessage = argv[4];
+        inputMessage = *argv[4];
     }
     else if(strcmp(argv[1], "u") == 0)
     {
@@ -93,7 +93,7 @@ void main(int argc, char *argv[])
             printf("Invalid input for the order of the pipe.");
             exit(1);
         }
-        inputMessage = argv[3];
+        inputMessage = *argv[3];
     }
     else
     {
