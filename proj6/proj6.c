@@ -32,6 +32,7 @@ void main(int argc, char *argv[])
     char *c;                            // Character pointer
     int i,k, n, status, order; 
     pid_t childpid;                     // For child process ID
+    string inputMessage;
     /*
     if (argc < 4 || argc > 5) 
     { 
@@ -64,6 +65,7 @@ void main(int argc, char *argv[])
             printf("Invalid input for the order of the pipe.");
             exit(1);
         }
+        inputMessage = argv[4];
     }
     else if(strcmp(argv[1], "u") == 0)
     {
@@ -91,6 +93,7 @@ void main(int argc, char *argv[])
             printf("Invalid input for the order of the pipe.");
             exit(1);
         }
+        inputMessage = argv[3];
     }
     else
     {
@@ -116,12 +119,12 @@ void main(int argc, char *argv[])
                 exit(3); 
             case 0: /* In the child */ 
                 close(f_des[0]); 
-                if (write(f_des[1], argv[1], strlen(argv[1])) != -1)
+                if (write(f_des[1], inputMessage, strlen(inputMessage)) != -1)
                 /* success: number of bytes written, 
                 failure: -1, sets errno. Write nbyte bytes from the buffer 
                 referenced by buf using the file descriptor pecified by filedes. */
                 { 
-                    printf ("Message sent by child: [%s]\n", argv[1]);
+                    printf ("Message sent by child: [%s]\n", inputMessage);
                     fflush(stdout); 
                 } 
                 else 
@@ -171,9 +174,9 @@ void main(int argc, char *argv[])
                 break; 
             default: /* In the parent */ 
                 close(f_des[0]); 
-                if (write(f_des[1], argv[], strlen(argv[1])) != -1)
+                if (write(f_des[1], inputMessage, strlen(inputMessage)) != -1)
                 { 
-                    printf ("Message sent by parent: [%s]\n", argv[1]); 
+                    printf ("Message sent by parent: [%s]\n", inputMessage); 
                     fflush(stdout); 
                 } 
                 else 
