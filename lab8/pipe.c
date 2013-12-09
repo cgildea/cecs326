@@ -12,6 +12,8 @@
 #include <limits.h>
 #include <unistd.h>
 #include <string.h> 
+#include <errno.h>
+# include <sys/wait.h>
 void main(int argc, char *argv[]) 
 { 
 	int f_des[2]; 					
@@ -21,7 +23,7 @@ void main(int argc, char *argv[])
 	static char message[BUFSIZ]; 		// Set buff size
 	char buffer[MAX_CANON]; 			// Set buffer to MAX_CANON
 	char *c; 							// Character pointer
-	int i,k, n; 
+	int i,k, n, status; 
 	pid_t childpid; 					// For child process ID
  	if (argc !=2) 
  	/* Check input arguments are 2 */
@@ -57,7 +59,8 @@ void main(int argc, char *argv[])
 			} 
 	 		break; 
  		default: /* In the parent */ 
-	 		close(f_des[1]); 
+	 		while ((wait(&status) == -1) && (errno == EINTR));
+			close(f_des[1]); 
 			if (read(f_des[0], message, BUFSIZ) != -1) 
 			/* success: number of bytes read, failure: -1, sets errno. 
 		 	All reads are initiated from current position. Read nbyte bytes 
