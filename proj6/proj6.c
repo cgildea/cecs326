@@ -62,15 +62,7 @@ void main(int argc, char *argv[])
             printf("\nInvalid input for the order of the pipe.\n");
             exit(1);
         }
-        /* generate a named pipe with r/w for user */ 
-        if ((mkfifo(argv[2],fifo_mode) == -1) && (errno != EEXIST)) /* EEXIST -> file already exists*/
-            /* success: 0, failure: -1, sets errno. mkfifo 
-            creates the FIFO file referenced by path; mode: File mode bits: 
-            S_IRUSR read permission, owner. S_IWUSR write permission, owner */
-        { /* Pipe error*/
-            perror ("Pipe"); 
-            exit(1); 
-        } 
+        
         pipeName = argv[2];
         inputMessage = argv[4];
     }
@@ -109,7 +101,15 @@ void main(int argc, char *argv[])
         exit(1);
     }
 
-
+    /* generate a named pipe with r/w for user */ 
+    if ((mkfifo(pipeName,fifo_mode) == -1) && (errno != EEXIST)) /* EEXIST -> file already exists*/
+        /* success: 0, failure: -1, sets errno. mkfifo 
+        creates the FIFO file referenced by path; mode: File mode bits: 
+        S_IRUSR read permission, owner. S_IWUSR write permission, owner */
+    { /* Pipe error*/
+        perror ("Pipe"); 
+        exit(1); 
+    } 
     
 
     if (order == 0)
@@ -122,7 +122,7 @@ void main(int argc, char *argv[])
         else if (child == 0)
         { 
             printf ("\n Child %ld is about to send the message [%s] to %s\n", (long)getpid(), inputMessage, pipeName); 
-            if ((fd = open(argv[1], O_WRONLY)) == -1) /* Open for writing only*/
+            if ((fd = open(pipeName, O_WRONLY)) == -1) /* Open for writing only*/
             { /* Open error*/
                 perror("\nChild cannot open FIFO\n"); 
                 exit(1);
@@ -144,7 +144,7 @@ void main(int argc, char *argv[])
         { 
         /* parent does a read */ 
             //printf ("Parent %ld is about to open FIFO %s\n", (long) getpid(), argv[1]); 
-            if ((fd = open(argv[1], O_RDONLY | O_NONBLOCK)) == -1) /* Open for reading only*/
+            if ((fd = open(pipeName, O_RDONLY | O_NONBLOCK)) == -1) /* Open for reading only*/
             { /* Open error*/
                 perror("\nParent cannot open FIFO\n"); 
                 exit(1); 
