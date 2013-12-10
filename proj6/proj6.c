@@ -212,46 +212,52 @@ void main(int argc, char *argv[])
         //         }  
         // }        
     } 
+
     else if (order == 1)
     {
-        switch (fork()) 
-        { 
-            case -1: 
-                perror ("Fork"); 
-                exit(3); 
-            case 0: /* In the child */ 
+
+
+
+
+        
+        // switch (fork()) 
+        // { 
+        //     case -1: 
+        //         perror ("Fork"); 
+        //         exit(3); 
+        //     case 0: /* In the child */ 
                 
-                close(f_des[1]); 
-                if (read(f_des[0], message, BUFSIZ) != -1) 
-                { 
-                   //printf ("Child %ld receives by child: *%s*\n", message); 
-                    fflush(stdout); 
-                } 
-                else 
-                { 
-                    perror ("Read");
-                    exit(4);
-                } 
-                break; 
+        //         close(f_des[1]); 
+        //         if (read(f_des[0], message, BUFSIZ) != -1) 
+        //         { 
+        //            //printf ("Child %ld receives by child: *%s*\n", message); 
+        //             fflush(stdout); 
+        //         } 
+        //         else 
+        //         { 
+        //             perror ("Read");
+        //             exit(4);
+        //         } 
+        //         break; 
                 
-            default: /* In the parent */ 
+        //     default:  In the parent  
                 
-                close(f_des[0]); 
-                if (write(f_des[1], inputMessage, strlen(inputMessage)) != -1)
-                { 
-                    printf ("Parent is about to send the message [%s] to ", inputMessage);
-                    if (strcmp(argv[1], "n") == 0) 
-                        printf("%s\n", argv[2]); 
-                    else
-                        printf("FIFO\n");
-                    fflush(stdout); 
-                } 
-                else 
-                { 
-                    perror ("Write"); 
-                    exit(5); 
-                } 
-        }
+        //         close(f_des[0]); 
+        //         if (write(f_des[1], inputMessage, strlen(inputMessage)) != -1)
+        //         { 
+        //             printf ("Parent is about to send the message [%s] to ", inputMessage);
+        //             if (strcmp(argv[1], "n") == 0) 
+        //                 printf("%s\n", argv[2]); 
+        //             else
+        //                 printf("FIFO\n");
+        //             fflush(stdout); 
+        //         } 
+        //         else 
+        //         { 
+        //             perror ("Write"); 
+        //             exit(5); 
+        //         } 
+        // }
     }
     exit(0); 
 }
