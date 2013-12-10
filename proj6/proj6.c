@@ -128,7 +128,7 @@ void main(int argc, char *argv[])
                 exit(1);
             } 
             /* In the child */ 
-            sprintf (buf, "\n*%s* from child %ld\n", inputMessage, (long)getpid()); 
+            sprintf (buf, "*%s* from child %ld\n", inputMessage, (long)getpid()); 
             strsize = strlen(buf) + 1; 
             if (write(fd, buf, strsize) != strsize) 
                 /* success: number of bytes written, 
@@ -142,6 +142,7 @@ void main(int argc, char *argv[])
         } 
         else 
         { 
+            while ((wait(&status) == -1) && (errno == EINTR)); /* EINTR -> interrupted system call*/
         /* parent does a read */ 
             //printf ("Parent %ld is about to open FIFO %s\n", (long) getpid(), argv[1]); 
             if ((fd = open(pipeName, O_RDONLY | O_NONBLOCK)) == -1) /* Open for reading only*/
@@ -150,7 +151,7 @@ void main(int argc, char *argv[])
                 exit(1); 
             } 
             printf ("\nParent is about to read the message from %s\n", pipeName); 
-            while ((wait(&status) == -1) && (errno == EINTR)); /* EINTR -> interrupted system call*/
+            
                 if (read(fd, buf, BUFSIZE) <=0) 
                 /* success: number of bytes read, failure: -1, sets errno. 
                 All reads are initiated from current position. Read nbyte bytes 
