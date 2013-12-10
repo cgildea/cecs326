@@ -31,7 +31,7 @@ void main(int argc, char *argv[])
     char buffer[MAX_CANON];             // Set buffer to MAX_CANON
     char *c;                            // Character pointer
     int i,k, n, status, order; 
-    pid_t childpid;                     // For child process ID
+    //pid_t childpid;                     // For child process ID
     char *inputMessage;
     char *pipeName;
     
@@ -121,14 +121,13 @@ void main(int argc, char *argv[])
                 perror ("Fork"); 
                 exit(3); 
             case 0: /* In the child */ 
-                childpid = (long)getppid();
                 close(f_des[0]); 
                 if (write(f_des[1], inputMessage, strlen(inputMessage)) != -1)
                 /* success: number of bytes written, 
                 failure: -1, sets errno. Write nbyte bytes from the buffer 
                 referenced by buf using the file descriptor pecified by filedes. */
                 { 
-                    printf ("\nChild %ld is about to send the message [%s] to %s\n", (long)childpid, inputMessage, pipeName);
+                    printf ("\nChild %ld is about to send the message [%s] to %s\n", (long)getpid(), inputMessage, pipeName);
                     fflush(stdout); 
                 } 
                 else 
@@ -148,7 +147,7 @@ void main(int argc, char *argv[])
                 from the open file associated with the file descriptor filedes 
                 into the buffer referenced by buf. */
                { 
-                    printf ("\nParent receives the message *%s* from child %ld\n", inputMessage, (long)childpid); 
+                    printf ("\nParent receives the message *%s* from child %ld\n", inputMessage, (long)getpid()); 
                     fflush(stdout); 
                 } 
                 else 
