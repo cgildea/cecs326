@@ -121,7 +121,7 @@ void main(int argc, char *argv[])
                 perror ("Fork"); 
                 exit(3); 
             case 0: /* In the child */ 
-                childpid = getpid();
+                childpid = (long)getppid();
                 close(f_des[0]); 
                 if (write(f_des[1], inputMessage, strlen(inputMessage)) != -1)
                 /* success: number of bytes written, 
