@@ -19,10 +19,13 @@
 #include <fcntl.h>
 #include <limits.h>
 #include <errno.h> 
+#include <iostream>
 
 # define BUFSIZE 256 
 void main(int argc, char *argv[]) 
 { 
+
+    std::string str;
 
     mode_t fifo_mode = S_IRUSR | S_IWUSR; 
     int fd, status, child, order, i, j; 
