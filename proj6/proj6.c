@@ -128,7 +128,7 @@ void main(int argc, char *argv[])
                 failure: -1, sets errno. Write nbyte bytes from the buffer 
                 referenced by buf using the file descriptor pecified by filedes. */
                 { 
-                    printf ("Child %ld is about to send the message [%s] to %s", (long)getpid(), inputMessage, pipeName);
+                    printf ("\nChild %ld is about to send the message [%s] to %s\n", (long)getpid(), inputMessage, pipeName);
                     fflush(stdout); 
                 } 
                 else 
@@ -136,7 +136,7 @@ void main(int argc, char *argv[])
                   perror ("Write"); 
                     exit(5); 
                 } 
-                printg("Message sent.")
+                printf("\nMessage sent.\n");
 
 
                 // printf ("\n Child %ld is about to open FIFO %s\n", (long)getpid(), argv[1]); 
@@ -161,8 +161,8 @@ void main(int argc, char *argv[])
 
                 break; 
             default: /* In the parent */ 
-                //while ((wait(&status) == -1) && (errno == EINTR));
-                printf("Parent is about the read the message from %s\n", pipeName);
+                while ((wait(&status) == -1) && (errno == EINTR));
+                printf("\nParent is about the read the message from %s\n", pipeName);
                 close(f_des[1]); 
                 if (read(f_des[0], message, BUFSIZ) != -1) 
                 /* success: number of bytes read, failure: -1, sets errno. 
@@ -170,7 +170,7 @@ void main(int argc, char *argv[])
                 from the open file associated with the file descriptor filedes 
                 into the buffer referenced by buf. */
                { 
-                    printf ("Parent receives the message *%s* from child %ld\n", inputMessage, (long)getpid()); 
+                    printf ("\nParent receives the message *%s* from child %ld\n", inputMessage, (long)getpid()); 
                     fflush(stdout); 
                 } 
                 else 
@@ -206,11 +206,11 @@ void main(int argc, char *argv[])
                 perror ("Fork"); 
                 exit(3); 
             case 0: /* In the child */ 
-                /*
+                
                 close(f_des[1]); 
                 if (read(f_des[0], message, BUFSIZ) != -1) 
                 { 
-                    printf ("Child %ld receives by child: *%s*\n", message); 
+                   //printf ("Child %ld receives by child: *%s*\n", message); 
                     fflush(stdout); 
                 } 
                 else 
@@ -219,9 +219,9 @@ void main(int argc, char *argv[])
                     exit(4);
                 } 
                 break; 
-                */
+                
             default: /* In the parent */ 
-                /*
+                
                 close(f_des[0]); 
                 if (write(f_des[1], inputMessage, strlen(inputMessage)) != -1)
                 { 
@@ -236,7 +236,7 @@ void main(int argc, char *argv[])
                 { 
                     perror ("Write"); 
                     exit(5); 
-                } */
+                } 
         }
     }
     exit(0); 
