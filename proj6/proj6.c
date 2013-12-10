@@ -142,7 +142,7 @@ void main(int argc, char *argv[])
         } 
         else 
         { 
-            while ((wait(&status) == -1) && (errno == EINTR)); /* EINTR -> interrupted system call*/
+
         /* parent does a read */ 
             //printf ("Parent %ld is about to open FIFO %s\n", (long) getpid(), argv[1]); 
             if ((fd = open(pipeName, O_RDONLY | O_NONBLOCK)) == -1) /* Open for reading only*/
@@ -150,6 +150,7 @@ void main(int argc, char *argv[])
                 perror("\nParent cannot open FIFO\n"); 
                 exit(1); 
             } 
+            while ((wait(&status) == -1) && (errno == EINTR)); /* EINTR -> interrupted system call*/
             printf ("\nParent is about to read the message from %s\n", pipeName); 
             
                 if (read(fd, buf, BUFSIZE) <=0) 
