@@ -120,10 +120,10 @@ void main(int argc, char *argv[])
         } 
         else if (child == 0)
         { 
-            printf ("\n Child %ld is about to send the message [%s] to %s", (long)getpid(), inputMessage, pipeName); 
+            printf ("\n Child %ld is about to send the message [%s] to %s\n", (long)getpid(), inputMessage, pipeName); 
             if ((fd = open(argv[1], O_WRONLY)) == -1) /* Open for writing only*/
             { /* Open error*/
-                perror("\nChild cannot open FIFO"); 
+                perror("\nChild cannot open FIFO\n"); 
                 exit(1);
             } 
             /* In the child */ 
@@ -145,7 +145,7 @@ void main(int argc, char *argv[])
             //printf ("Parent %ld is about to open FIFO %s\n", (long) getpid(), argv[1]); 
             if ((fd = open(argv[1], O_RDONLY | O_NONBLOCK)) == -1) /* Open for reading only*/
             { /* Open error*/
-                perror("Parent cannot open FIFO"); 
+                perror("\nParent cannot open FIFO\n"); 
                 exit(1); 
             } 
             printf ("\nParent is about to read the message from %s\n", pipeName); 
@@ -156,10 +156,10 @@ void main(int argc, char *argv[])
                 from the open file associated with the file descriptor filedes 
                 into the buffer referenced by buf. */
                 { /* Read error*/
-                    perror("Parent read from FIFO failed\n");
+                    perror("\nParent read from FIFO failed\n");
                     exit(1); 
                 } 
-            printf ("\nParent receives the message %s", buf); 
+            printf ("\nParent receives the message %s \n", buf); 
         }
 
 
