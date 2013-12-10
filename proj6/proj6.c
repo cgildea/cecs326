@@ -19,13 +19,12 @@
 #include <fcntl.h>
 #include <limits.h>
 #include <errno.h> 
-#include <iostream>
+
 
 # define BUFSIZE 256 
 void main(int argc, char *argv[]) 
 { 
 
-    std::string str;
 
     mode_t fifo_mode = S_IRUSR | S_IWUSR; 
     int fd, status, child, order, i, j; 
@@ -33,6 +32,7 @@ void main(int argc, char *argv[])
     unsigned strsize; 
     char *inputMessage;
     char *pipeName;
+    char str[32];
     
     if (argc < 4 || argc > 5) 
     { 
@@ -130,9 +130,9 @@ void main(int argc, char *argv[])
                 perror("\nChild cannot open FIFO\n"); 
                 exit(1);
             } 
-
-            char* str = new char[inputMessage.size()+1];
-            strcpy(str, inputMessage.c_str());
+            str = inputMessage;
+            //char* str = new char[inputMessage.size()+1];
+            //strcpy(str, inputMessage.c_str());
             for(i=0;i<=strlen(str);i++)
             {
                 if(str[i]>=65&&str[i]<=90)
