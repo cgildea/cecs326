@@ -6,8 +6,7 @@
 /*               Steven Le                                                */                                            
 /* DESCRIPTION: This program utilizes creating pipes                      */
 /**************************************************************************/ 
-/* Unnamed pipe pipe.c */ 
-/* Usage: pipe message_to_be_written. Parent write a message to child */ 
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <limits.h>
@@ -24,15 +23,12 @@
 # define BUFSIZE 256 
 void main(int argc, char *argv[]) 
 { 
-
-
     mode_t fifo_mode = S_IRUSR | S_IWUSR; 
     int fd, status, child, order, i, j; 
     char buf[BUFSIZE]; 
     unsigned strsize; 
     char *inputMessage;
     char *pipeName;
-    char str[32];
     
     if (argc < 4 || argc > 5) 
     { 
@@ -115,7 +111,7 @@ void main(int argc, char *argv[])
     } 
     
 
-    if (order == 0)
+    if (order == 0) /* child -> parent */ 
     {
         if (( child = fork()) == -1) 
         { /* Fork error*/
@@ -124,15 +120,12 @@ void main(int argc, char *argv[])
         } 
         else if (child == 0)
         { 
-            printf ("\nChild %ld is about to send the message [%s] to %s\n", (long)getpid(), inputMessage, pipeName); 
+            printf ("\nChild %ld is about to send the message [%s] to %s", (long)getpid(), inputMessage, pipeName); 
             if ((fd = open(pipeName, O_WRONLY)) == -1) /* Open for writing only*/
             { /* Open error*/
-                perror("\nChild cannot open FIFO\n"); 
+                perror("\nChild cannot open FIFO"); 
                 exit(1);
             } 
-           
-            //char* str = new char[inputMessage.size()+1];
-            //strcpy(str, inputMessage.c_str());
             for(i=0;i<=strlen(inputMessage);i++)
             {
                 if(inputMessage[i]>=65&&inputMessage[i]<=90)
@@ -140,10 +133,8 @@ void main(int argc, char *argv[])
                 else if (inputMessage[i]>=97&&inputMessage[i]<=122)
                     inputMessage[i]=inputMessage[i]-32;
             }
-            //inputMessage = str;
-
             /* In the child */ 
-            sprintf (buf, "*%s* from child %ld\n", inputMessage, (long)getpid()); 
+            sprintf (buf, "*%s* from child %ld", inputMessage, (long)getpid()); 
             strsize = strlen(buf) + 1; 
             if (write(fd, buf, strsize) != strsize) 
                 /* success: number of bytes written, 
@@ -162,11 +153,11 @@ void main(int argc, char *argv[])
             //printf ("Parent %ld is about to open FIFO %s\n", (long) getpid(), argv[1]); 
             if ((fd = open(pipeName, O_RDONLY | O_NONBLOCK)) == -1) /* Open for reading only*/
             { /* Open error*/
-                perror("\nParent cannot open FIFO\n"); 
+                perror("\nParent cannot open FIFO"); 
                 exit(1); 
             } 
             while ((wait(&status) == -1) && (errno == EINTR)); /* EINTR -> interrupted system call*/
-            printf ("\nParent is about to read the message from %s\n", pipeName); 
+            printf ("\nParent is about to read the message from %s", pipeName); 
             
                 if (read(fd, buf, BUFSIZE) <=0) 
                 /* success: number of bytes read, failure: -1, sets errno. 
@@ -174,108 +165,70 @@ void main(int argc, char *argv[])
                 from the open file associated with the file descriptor filedes 
                 into the buffer referenced by buf. */
                 { /* Read error*/
-                    perror("\nParent read from FIFO failed\n");
+                    perror("\nParent read from FIFO failed");
                     exit(1); 
                 } 
-            printf ("\nParent receives the message %s \n", buf); 
+            printf ("\nParent receives the message %s", buf); 
+        }      
+    } 
+    else if (order == 1) /* parent -> child */
+    {
+         if (( child = fork()) == -1) 
+        { /* Fork error*/
+            perror ("Fork"); 
+            exit(1); 
+        } 
+        else if (child == 0)
+        { 
+            /* child does a read */ 
+            if ((fd = open(pipeName, O_RDONLY | O_NONBLOCK)) == -1) /* Open for reading only*/
+            { /* Open error*/
+                perror("\nChild cannot open FIFO"); 
+                exit(1); 
+            } 
+            while ((wait(&status) == -1) && (errno == EINTR)); /* EINTR -> interrupted system call*/
+            printf ("\nChild %ld is about to read the message from %s", (long)getpid(), pipeName); 
+            
+                if (read(fd, buf, BUFSIZE) <=0) 
+                /* success: number of bytes read, failure: -1, sets errno. 
+                All reads are initiated from current position. Read nbyte bytes 
+                from the open file associated with the file descriptor filedes 
+                into the buffer referenced by buf. */
+                { /* Read error*/
+                    perror("\nChild read from FIFO failed");
+                    exit(1); 
+                } 
+            printf ("\nChild %ld receives the message %s", (long)getpid(), buf);
+        } 
+        else 
+        { 
+            printf ("\nParent is about to send the message [%s] to %s", inputMessage, pipeName); 
+            if ((fd = open(pipeName, O_WRONLY)) == -1) /* Open for writing only*/
+            { /* Open error*/
+                perror("\nParent cannot open FIFO"); 
+                exit(1);
+            } 
+            for(i=0;i<=strlen(inputMessage);i++)
+            {
+                if(inputMessage[i]>=65&&inputMessage[i]<=90)
+                    inputMessage[i]=inputMessage[i]+32;
+                else if (inputMessage[i]>=97&&inputMessage[i]<=122)
+                    inputMessage[i]=inputMessage[i]-32;
+            }
+            /* In the child */ 
+            sprintf (buf, "*%s* from parent", inputMessage); 
+            strsize = strlen(buf) + 1; 
+            if (write(fd, buf, strsize) != strsize) 
+                /* success: number of bytes written, 
+                failure: -1, sets errno. Write nbyte bytes from the buffer 
+                referenced by buf using the file descriptor pecified by filedes. */
+            { /* Write error*/
+                printf("\nParent write to FIFO failed"); 
+                exit(1); 
+            } 
+            printf ("\nMessage sent."); 
         }
 
-
-
-
-
-
-
-
-
-        // switch (fork())
-        // { 
-        //     case -1: /* Fork error*/
-        //         perror ("Fork"); 
-        //         exit(3); 
-        //     case 0: /* In the child */ 
-        //         close(f_des[0]); 
-        //         if (write(f_des[1], inputMessage, strlen(inputMessage)) != -1)
-        //         /* success: number of bytes written, 
-        //         failure: -1, sets errno. Write nbyte bytes from the buffer 
-        //         referenced by buf using the file descriptor pecified by filedes. */
-        //         { 
-        //             printf ("\nChild %ld is about to send the message [%s] to %s\n", (long)getpid(), inputMessage, pipeName);
-        //             fflush(stdout); 
-        //         } 
-        //         else 
-        //         { 
-        //             perror ("Write"); 
-        //             exit(5); 
-        //         } 
-        //         printf("\nMessage sent.\n");
-        //         break; 
-        //     default: /* In the parent */ 
-        //         while ((wait(&status) == -1) && (errno == EINTR));
-        //         printf("\nParent is about the read the message from %s\n", pipeName);
-        //         close(f_des[1]); 
-        //         if (read(f_des[0], message, BUFSIZ) != -1) 
-        //         /* success: number of bytes read, failure: -1, sets errno. 
-        //         All reads are initiated from current position. Read nbyte bytes 
-        //         from the open file associated with the file descriptor filedes 
-        //         into the buffer referenced by buf. */
-        //        { 
-        //             printf ("\nParent receives the message *%s* from child %ld\n", inputMessage, (long)getpid()); 
-        //             fflush(stdout); 
-        //         } 
-        //         else 
-        //         { 
-        //             perror ("Read"); 
-        //             exit(4);
-        //         }  
-        // }        
-    } 
-
-    else if (order == 1)
-    {
-
-
-
-
-
-        // switch (fork()) 
-        // { 
-        //     case -1: 
-        //         perror ("Fork"); 
-        //         exit(3); 
-        //     case 0: /* In the child */ 
-                
-        //         close(f_des[1]); 
-        //         if (read(f_des[0], message, BUFSIZ) != -1) 
-        //         { 
-        //            //printf ("Child %ld receives by child: *%s*\n", message); 
-        //             fflush(stdout); 
-        //         } 
-        //         else 
-        //         { 
-        //             perror ("Read");
-        //             exit(4);
-        //         } 
-        //         break; 
-                
-        //     default:  In the parent  
-                
-        //         close(f_des[0]); 
-        //         if (write(f_des[1], inputMessage, strlen(inputMessage)) != -1)
-        //         { 
-        //             printf ("Parent is about to send the message [%s] to ", inputMessage);
-        //             if (strcmp(argv[1], "n") == 0) 
-        //                 printf("%s\n", argv[2]); 
-        //             else
-        //                 printf("FIFO\n");
-        //             fflush(stdout); 
-        //         } 
-        //         else 
-        //         { 
-        //             perror ("Write"); 
-        //             exit(5); 
-        //         } 
-        // }
     }
     exit(0); 
 }
