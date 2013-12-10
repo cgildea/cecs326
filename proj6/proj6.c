@@ -121,14 +121,14 @@ void main(int argc, char *argv[])
                 perror ("Fork"); 
                 exit(3); 
             case 0: /* In the child */ 
-                
+                childpid = getpid();
                 close(f_des[0]); 
                 if (write(f_des[1], inputMessage, strlen(inputMessage)) != -1)
                 /* success: number of bytes written, 
                 failure: -1, sets errno. Write nbyte bytes from the buffer 
                 referenced by buf using the file descriptor pecified by filedes. */
                 { 
-                    printf ("\nChild %ld is about to send the message [%s] to %s\n", (long)getpid(), inputMessage, pipeName);
+                    printf ("\nChild %ld is about to send the message [%s] to %s\n", (long)childpid, inputMessage, pipeName);
                     fflush(stdout); 
                 } 
                 else 
@@ -137,28 +137,6 @@ void main(int argc, char *argv[])
                     exit(5); 
                 } 
                 printf("\nMessage sent.\n");
-
-
-                // printf ("\n Child %ld is about to open FIFO %s\n", (long)getpid(), argv[1]); 
-                // if ((fd = open(argv[1], O_WRONLY)) == -1) /* Open for writing only*/
-                // { /* Open error*/
-                //     perror("Child cannot open FIFO"); 
-                //     exit(1);
-                // } 
-                // /* In the child */ 
-                // sprintf (buf, "This was written by child %ld\n", (long)getpid()); 
-                // strsize = strlen(buf) + 1; 
-                // if (write(fd, buf, strsize) != strsize) 
-                //     /* success: number of bytes written, 
-                //     failure: -1, sets errno. Write nbyte bytes from the buffer 
-                //     referenced by buf using the file descriptor pecified by filedes. */
-                // { /* Write error*/
-                //     printf("Child write to FIFO failed\n"); 
-                //     exit(1); 
-                // } 
-                // printf ("Child %ld is done\n", (long)getpid());
-
-
                 break; 
             default: /* In the parent */ 
                 while ((wait(&status) == -1) && (errno == EINTR));
@@ -170,7 +148,7 @@ void main(int argc, char *argv[])
                 from the open file associated with the file descriptor filedes 
                 into the buffer referenced by buf. */
                { 
-                    printf ("\nParent receives the message *%s* from child %ld\n", inputMessage, (long)getpid()); 
+                    printf ("\nParent receives the message *%s* from child %ld\n", inputMessage, (long)childpid); 
                     fflush(stdout); 
                 } 
                 else 
@@ -178,24 +156,6 @@ void main(int argc, char *argv[])
                     perror ("Read"); 
                     exit(4);
                 }  
-                // printf ("Parent %ld is about to open FIFO %s\n", (long) getpid(), argv[1]); 
-                // if ((fd = open(argv[1], O_RDONLY | O_NONBLOCK)) == -1) /* Open for reading only*/
-                // { /* Open error*/
-                //     perror("Parent cannot open FIFO"); 
-                //     exit(1); 
-                // } 
-                // printf ("Parent is about to read\n", (long)getpid()); 
-                // while ((wait(&status) == -1) && (errno == EINTR)); /* EINTR -> interrupted system call*/
-                //     if (read(fd, buf, BUFSIZE) <=0) 
-                //     /* success: number of bytes read, failure: -1, sets errno. 
-                //     All reads are initiated from current position. Read nbyte bytes 
-                //     from the open file associated with the file descriptor filedes 
-                //     into the buffer referenced by buf. */
-                //     { /* Read error*/
-                //         perror("Parent read from FIFO failed\n");
-                //         exit(1); 
-                //     } 
-                // printf ("Parent %ld received: %s\n", (long)getpid(), buf); 
         }        
     } 
     else if (order == 1)
