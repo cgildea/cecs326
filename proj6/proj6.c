@@ -160,7 +160,7 @@ void main(int argc, char *argv[])
                     exit(1); 
                 } 
             printf ("\nParent receives the message %s", buf); 
-
+        }
 
 
 
@@ -219,7 +219,7 @@ void main(int argc, char *argv[])
 
 
 
-        
+
         // switch (fork()) 
         // { 
         //     case -1: 
