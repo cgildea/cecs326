@@ -168,7 +168,7 @@ void main(int argc, char *argv[])
                     perror("\nParent read from FIFO failed");
                     exit(1); 
                 } 
-            printf ("\nParent receives the message %s", buf); 
+            printf ("\nParent receives the message %s\n", buf); 
         }      
     } 
     else if (order == 1) /* parent -> child */
@@ -198,7 +198,7 @@ void main(int argc, char *argv[])
                     perror("\nChild read from FIFO failed");
                     exit(1); 
                 } 
-            printf ("\nChild %ld receives the message %s", (long)getpid(), buf);
+            printf ("\nChild %ld receives the message %s\n", (long)getpid(), buf);
         } 
         else 
         { 
