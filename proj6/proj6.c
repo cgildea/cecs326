@@ -130,17 +130,17 @@ void main(int argc, char *argv[])
                 perror("\nChild cannot open FIFO\n"); 
                 exit(1);
             } 
-            str = inputMessage;
+           
             //char* str = new char[inputMessage.size()+1];
             //strcpy(str, inputMessage.c_str());
-            for(i=0;i<=strlen(str);i++)
+            for(i=0;i<=strlen(inputMessage);i++)
             {
-                if(str[i]>=65&&str[i]<=90)
-                    str[i]=str[i]+32;
-                else if (str[i]>=97&&str[i]<=122)
-                    str[i]=str[i]-32;
+                if(inputMessage[i]>=65&&inputMessage[i]<=90)
+                    inputMessage[i]=inputMessage[i]+32;
+                else if (inputMessage[i]>=97&&inputMessage[i]<=122)
+                    inputMessage[i]=inputMessage[i]-32;
             }
-            inputMessage = str;
+            //inputMessage = str;
 
             /* In the child */ 
             sprintf (buf, "*%s* from child %ld\n", inputMessage, (long)getpid()); 
