@@ -25,11 +25,12 @@ void main(int argc, char *argv[])
 { 
 
     mode_t fifo_mode = S_IRUSR | S_IWUSR; 
-    int fd, status, child, order; 
+    int fd, status, child, order, i, j; 
     char buf[BUFSIZE]; 
     unsigned strsize; 
     char *inputMessage;
     char *pipeName;
+    char* str = new char[data.size()+1];
     
     if (argc < 4 || argc > 5) 
     { 
@@ -121,12 +122,24 @@ void main(int argc, char *argv[])
         } 
         else if (child == 0)
         { 
-            printf ("\n Child %ld is about to send the message [%s] to %s\n", (long)getpid(), inputMessage, pipeName); 
+            printf ("\nChild %ld is about to send the message [%s] to %s\n", (long)getpid(), inputMessage, pipeName); 
             if ((fd = open(pipeName, O_WRONLY)) == -1) /* Open for writing only*/
             { /* Open error*/
                 perror("\nChild cannot open FIFO\n"); 
                 exit(1);
             } 
+
+            char* str = new char[inputMessage.size()+1];
+            strcpy(str, inputMessage.c_str());
+            for(i=0;i<=strlen(str);i++)
+            {
+                if(str[i]>=65&&str[i]<=90)
+                    str[i]=str[i]+32;
+                else if (str[i]>=97&&str[i]<=122)
+                    str[i]=str[i]-32;
+            }
+            inputMessage = str;
+
             /* In the child */ 
             sprintf (buf, "*%s* from child %ld\n", inputMessage, (long)getpid()); 
             strsize = strlen(buf) + 1; 
