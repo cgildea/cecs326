@@ -144,7 +144,7 @@ void main(int argc, char *argv[])
                 printf("\nChild write to FIFO failed"); 
                 exit(1); 
             } 
-            printf ("\nMessage sent."); 
+            printf ("\nMessage sent.\n"); 
         } 
         else 
         { 
@@ -226,7 +226,7 @@ void main(int argc, char *argv[])
                 printf("\nParent write to FIFO failed"); 
                 exit(1); 
             } 
-            printf ("\nMessage sent."); 
+            printf ("\nMessage sent.\n"); 
         }
 
     }
