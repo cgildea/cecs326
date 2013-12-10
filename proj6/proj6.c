@@ -30,7 +30,6 @@ void main(int argc, char *argv[])
     unsigned strsize; 
     char *inputMessage;
     char *pipeName;
-    char* str = new char[data.size()+1];
     
     if (argc < 4 || argc > 5) 
     { 
